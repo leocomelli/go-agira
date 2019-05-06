@@ -26,9 +26,13 @@ func main() {
 
 	opts := &jira.ListBoardsOptions{
 		ProjectKeyOrID: "CBD",
+		MaxResults:     1,
 	}
 
 	boards, resp, err := client.Boards.ListBoards(context.Background(), opts)
+	if err != nil {
+		log.Fatal(err)
+	}
 
 	fmt.Printf("max results: %d\n", resp.MaxResults)
 	fmt.Printf("start at: %d\n", resp.StartAt)
@@ -37,6 +41,15 @@ func main() {
 
 	for _, b := range boards {
 		fmt.Printf("\t %d - %v\n", b.ID, b.Name)
+
+		sprints, _, err := client.Boards.ListSprints(context.Background(), b.ID, nil)
+		if err != nil {
+			log.Fatal(err)
+		}
+
+		for _, s := range sprints {
+			fmt.Printf("\t\t id: %d, name: %s, state: %s, start: %v, end: %v, complete: %v\n", s.ID, s.Name, s.State, s.Start, s.End, s.Complete)
+		}
 	}
 
 }
