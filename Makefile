@@ -4,6 +4,10 @@
 
 GOFILES	= $(shell find . -type f -name '*.go' -not -path "./.git/*")
 
+setup:
+	@go get -u golang.org/x/lint/golint
+	@go get golang.org/x/tools/cmd/goimports	
+
 build:
 	@export GO111MODULE=on;go build ./...
 
@@ -29,4 +33,4 @@ test:
 	@go test ./... -coverpkg=all
 
 all:
-	@make -s build test verify
+	@make -s setup build test verify

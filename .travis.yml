@@ -18,6 +18,9 @@ env:
   global:
     - GO111MODULE=on
 
+install:
+  - make setup
+
 script:
   - make all
 
