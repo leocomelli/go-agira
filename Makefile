@@ -30,7 +30,7 @@ verify:
 	@make -s lint
 
 test:
-	@go test ./... -coverpkg=all
+	@go test -race -coverprofile=coverage.txt -covermode=atomic
 
 all:
 	@make -s setup build test verify
