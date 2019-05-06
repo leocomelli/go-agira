@@ -1,6 +1,6 @@
 # go-jira
 
-[![Build Status](https://travis-ci.org/leocomelli/go-jira.svg?branch=master)](https://travis-ci.org/leocomelli/go-jira)
+[![Build Status](https://travis-ci.org/leocomelli/go-jira.svg?branch=master)](https://travis-ci.org/leocomelli/go-jira) [![codecov](https://codecov.io/gh/leocomelli/go-jira/branch/master/graph/badge.svg)](https://codecov.io/gh/leocomelli/go-jira)
 
 go-jira is a Go client library for acessing the [Jira Agile API](https://developer.atlassian.com/cloud/jira/software/rest).
 
