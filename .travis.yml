@@ -1,0 +1,25 @@
+language: go
+
+go:
+  - "1.12.x"
+  - master
+
+matrix:
+  allow_failures:
+    - go: master
+  fast_finish: true
+
+cache:
+  directories:
+    - $HOME/.cache/go-build
+    - $HOME/gopath/pkg/mod
+
+env:
+  global:
+    - GO111MODULE=on
+
+script:
+  - make all
+
+after_success:
+  - bash <(curl -s https://codecov.io/bash)
