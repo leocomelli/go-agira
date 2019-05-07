@@ -8,11 +8,11 @@ import (
 // ListEpicsOptions contains all options to list all epics from the board
 type ListEpicsOptions struct {
 	//The starting index of the returned epics. Base index: 0. See the 'Pagination' section at the top of this page for more details.
-	StartAt int
+	StartAt int `query:"startAt"`
 	//The maximum number of epics to return per page. Default: 50. See the 'Pagination' section at the top of this page for more details.
-	MaxResults int
+	MaxResults int `query:"maxResults"`
 	//Filters results to epics that are either done or not done. Valid values: true, false.
-	Done string
+	Done bool `query:"done"`
 }
 
 // ListEpics returns all epics from the board, for the given board ID.
