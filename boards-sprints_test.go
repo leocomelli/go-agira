@@ -18,7 +18,7 @@ func TestBoardsServiceListSprints(t *testing.T) {
 	mux.HandleFunc("/board/5259/sprint", func(w http.ResponseWriter, r *http.Request) {
 		assert.Equal(t, "GET", r.Method)
 		fmt.Fprint(w, `{"maxResults": 50,"startAt": 0,"isLast": false,
-		"values": [{"id": 5259,"self": "https://jira.csc.com/rest/agile/1.0/sprint/5259","state": "closed","name": "CBD Tarefas Planning","startDate": "2018-09-18T17:30:00.000Z","endDate": "2018-09-19T01:30:00.000Z","completeDate": "2018-09-19T03:00:00.000Z","originBoardId": 2881,"goal": "Finalizar refinamento das estórias de agendamento, reserva de telefone e checagem de crédito."}]}`)
+		"values": [{"id": 5259,"self": "https://jira.csc.com/rest/agile/1.0/sprint/5259","state": "closed","name": "Sprint 001","startDate": "2018-09-18T17:30:00.000Z","endDate": "2018-09-19T01:30:00.000Z","completeDate": "2018-09-19T03:00:00.000Z","originBoardId": 2881,"goal": "My goal"}]}`)
 	})
 
 	sprints, resp, err := client.Boards.ListSprints(context.Background(), 5259, nil)
@@ -30,12 +30,12 @@ func TestBoardsServiceListSprints(t *testing.T) {
 			ID:       5259,
 			SelfLink: "https://jira.csc.com/rest/agile/1.0/sprint/5259",
 			State:    "closed",
-			Name:     "CBD Tarefas Planning",
+			Name:     "Sprint 001",
 			Start:    time.Date(2018, 9, 18, 17, 30, 0, 0, time.UTC),
 			End:      time.Date(2018, 9, 19, 1, 30, 0, 0, time.UTC),
 			Complete: time.Date(2018, 9, 19, 3, 0, 0, 0, time.UTC),
 			BoardID:  2881,
-			Goal:     "Finalizar refinamento das estórias de agendamento, reserva de telefone e checagem de crédito.",
+			Goal:     "My goal",
 		},
 	}
 	assert.True(t, reflect.DeepEqual(sprints, want))
