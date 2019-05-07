@@ -47,8 +47,20 @@ func main() {
 			log.Fatal(err)
 		}
 
+		fmt.Println("sprints: ")
 		for _, s := range sprints {
-			fmt.Printf("\t\t id: %d, name: %s, state: %s, start: %v, end: %v, complete: %v\n", s.ID, s.Name, s.State, s.Start, s.End, s.Complete)
+			fmt.Printf("\t id: %d, name: %s, state: %s, start: %v, end: %v, complete: %v\n", s.ID, s.Name, s.State, s.Start, s.End, s.Complete)
+		}
+
+		epics, _, err := client.Boards.ListEpics(context.Background(), b.ID, &jira.ListEpicsOptions{})
+
+		if err != nil {
+			log.Fatal(err)
+		}
+
+		fmt.Println("epics: ")
+		for _, e := range epics {
+			fmt.Printf("\t id: %d, name: %s, done: %v\n", e.ID, e.Name, e.Done)
 		}
 	}
 
