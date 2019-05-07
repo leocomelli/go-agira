@@ -33,11 +33,11 @@ func (s Sprint) String() string {
 // ListSprintsOptions contains all options to list all sprints from a board
 type ListSprintsOptions struct {
 	//The starting index of the returned sprints. Base index: 0. See the 'Pagination' section at the top of this page for more details.
-	StartAt int `query:"startAt,omitempty"`
+	StartAt int `query:"startAt"`
 	//The maximum number of sprints to return per page. Default: 50. See the 'Pagination' section at the top of this page for more details.
-	MaxResults int `query:"maxResults,omitempty"`
+	MaxResults int `query:"maxResults"`
 	//Filters results to sprints in specified states. Valid values: future, active, closed. You can define multiple states separated by commas, e.g. state=active,closed
-	State string `query:"state,omitempty"`
+	State string `query:"state"`
 }
 
 // ListSprints returns all sprints from a board, for a given board ID.
