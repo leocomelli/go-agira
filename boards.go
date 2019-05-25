@@ -2,6 +2,7 @@ package jira
 
 import (
 	"context"
+	"fmt"
 )
 
 // BoardsService handles communication with the issue related
@@ -82,4 +83,24 @@ func (b *BoardsService) ListBoards(ctx context.Context, opts *ListBoardsOptions)
 	resp.IsLast = wrap.IsLast
 
 	return wrap.Values, resp, nil
+}
+
+// GetBoard returns the board for the given board Id.
+// This board will only be returned if the user has permission to view it.
+//
+// GET /rest/agile/1.0/board/{boardId}
+func (b *BoardsService) GetBoard(ctx context.Context, boardID int) (*Board, *Response, error) {
+
+	req, err := b.client.NewRequest("GET", fmt.Sprintf("board/%d", boardID), nil)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	var board = &Board{}
+	resp, err := b.client.Do(ctx, req, board)
+	if err != nil {
+		return nil, resp, err
+	}
+
+	return board, resp, nil
 }

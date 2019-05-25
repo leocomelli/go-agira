@@ -37,3 +37,25 @@ func TestBoardsServiceList(t *testing.T) {
 	assert.Equal(t, 0, resp.StartAt)
 	assert.False(t, resp.IsLast)
 }
+
+func TestBoardsServiceGet(t *testing.T) {
+	client, mux, _, teardown := setup()
+	defer teardown()
+
+	mux.HandleFunc("/board/5597", func(w http.ResponseWriter, r *http.Request) {
+		assert.Equal(t, "GET", r.Method)
+		fmt.Fprint(w, `{"id": 5597,"self": "https://jira.com/rest/agile/1.0/board/42","name": "MTD board","type": "scrum"}`)
+	})
+
+	board, _, err := client.Boards.GetBoard(context.Background(), 5597)
+	assert.Nil(t, err)
+
+	want := &Board{
+		ID:       5597,
+		SelfLink: "https://jira.com/rest/agile/1.0/board/42",
+		Name:     "MTD board",
+		Type:     "scrum",
+	}
+
+	assert.True(t, reflect.DeepEqual(board, want))
+}
