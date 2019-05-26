@@ -22,6 +22,12 @@ type Sprint struct {
 	Goal     string    `json:"goal,omitempty"`
 }
 
-func (s Sprint) String() string {
-	return s.Name
+// SprintsOptions contains all options to list all sprints from a board
+type SprintsOptions struct {
+	//The starting index of the returned sprints. Base index: 0. See the 'Pagination' section at the top of this page for more details.
+	StartAt int `query:"startAt"`
+	//The maximum number of sprints to return per page. Default: 50. See the 'Pagination' section at the top of this page for more details.
+	MaxResults int `query:"maxResults"`
+	//Filters results to sprints in specified states. Valid values: future, active, closed. You can define multiple states separated by commas, e.g. state=active,closed
+	State string `query:"state"`
 }

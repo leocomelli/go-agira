@@ -59,3 +59,42 @@ func TestBoardsServiceGet(t *testing.T) {
 
 	assert.True(t, reflect.DeepEqual(board, want))
 }
+
+func TestBoardsServiceListBacklogIssues(t *testing.T) {
+	client, mux, _, teardown := setup()
+	defer teardown()
+
+	mux.HandleFunc("/board/5259/backlog", func(w http.ResponseWriter, r *http.Request) {
+		assert.Equal(t, "GET", r.Method)
+		_, _ = fmt.Fprint(w, issueAsJSON)
+	})
+
+	backlog, resp, err := client.Boards.ListBacklogIssues(context.Background(), 5259, nil)
+	assert.Nil(t, err)
+	assert.Len(t, backlog, 1)
+
+	issue := backlog[0]
+	assert.Equal(t, "776509", issue.ID)
+	assert.Equal(t, "https://jira.mycompany.com/rest/agile/1.0/issue/776509", issue.SelfLink)
+	assert.Equal(t, "MCP-840", issue.Key)
+	assert.NotNil(t, issue.Fields.Project)
+	assert.Len(t, issue.Fields.Worklogs.Worklogs, 4)
+	assert.Len(t, issue.Fields.Comments.Comments, 2)
+	assert.Equal(t, 50, resp.MaxResults)
+	assert.Equal(t, 0, resp.StartAt)
+	assert.False(t, resp.IsLast)
+}
+
+func TestBoardsServiceListIssues(t *testing.T) {
+	client, mux, _, teardown := setup()
+	defer teardown()
+
+	mux.HandleFunc("/board/5259/issue", func(w http.ResponseWriter, r *http.Request) {
+		assert.Equal(t, "GET", r.Method)
+		_, _ = fmt.Fprint(w, issueAsJSON)
+	})
+
+	backlog, _, err := client.Boards.ListIssues(context.Background(), 5259, nil)
+	assert.Nil(t, err)
+	assert.Len(t, backlog, 1)
+}

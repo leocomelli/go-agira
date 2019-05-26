@@ -287,3 +287,19 @@ type IssueProject struct {
 	Simplified string               `json:"simplified,omitempty"`
 	Style      string               `json:"style,omitempty"`
 }
+
+// IssuesOptions contains all options to list backlog from a board
+type IssuesOptions struct {
+	//The starting index of the returned sprints. Base index: 0. See the 'Pagination' section at the top of this page for more details.
+	StartAt int `query:"startAt"`
+	//The maximum number of sprints to return per page. Default: 50. See the 'Pagination' section at the top of this page for more details.
+	MaxResults int `query:"maxResults"`
+	//Filters results using a JQL query. If you define an order in your JQL query, it will override the default order of the returned issues.
+	JQL string `query:"jql"`
+	//Specifies whether to validate the JQL query or not. Default: true.
+	ValidateQuery bool `query:"validateQuery"`
+	//The list of fields to return for each issue. By default, all navigable and Agile fields are returned.
+	Fields string `query:"fields"`
+	//This parameter is currently not used.
+	Expand string `query:"expand"`
+}

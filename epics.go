@@ -18,6 +18,12 @@ type Epic struct {
 	Color    map[string]string `json:"color,omitempty"`
 }
 
-func (e Epic) String() string {
-	return e.Name
+// EpicsOptions contains all options to list all epics from the board
+type EpicsOptions struct {
+	//The starting index of the returned epics. Base index: 0. See the 'Pagination' section at the top of this page for more details.
+	StartAt int `query:"startAt"`
+	//The maximum number of epics to return per page. Default: 50. See the 'Pagination' section at the top of this page for more details.
+	MaxResults int `query:"maxResults"`
+	//Filters results to epics that are either done or not done. Valid values: true, false.
+	Done bool `query:"done"`
 }

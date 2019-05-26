@@ -26,12 +26,8 @@ type Board struct {
 	SelfLink string `json:"self,omitempty"`
 }
 
-func (b Board) String() string {
-	return b.Name
-}
-
-// ListBoardsOptions contains all options to list boards
-type ListBoardsOptions struct {
+// BoardsOptions contains all options to list boards
+type BoardsOptions struct {
 	//The starting index of the returned boards. Base index: 0. See the 'Pagination' section at the top of this page for more details.
 	StartAt int `query:"startAt"`
 	//The maximum number of boards to return per page. Default: 50. See the 'Pagination' section at the top of this page for more details.
@@ -63,7 +59,7 @@ type ListBoardsOptions struct {
 // This only includes boards that the user has permission to view
 //
 // GET /rest/agile/1.0/board
-func (b *BoardsService) ListBoards(ctx context.Context, opts *ListBoardsOptions) ([]*Board, *Response, error) {
+func (b *BoardsService) ListBoards(ctx context.Context, opts *BoardsOptions) ([]*Board, *Response, error) {
 
 	q := QueryParameters(opts)
 
@@ -103,4 +99,64 @@ func (b *BoardsService) GetBoard(ctx context.Context, boardID int) (*Board, *Res
 	}
 
 	return board, resp, nil
+}
+
+// ListBacklogIssues returns all issues from the board's backlog, for the given board Id.
+// This only includes issues that the user has permission to view. The backlog contains
+// incomplete issues that are not assigned to any future or active sprint. Note, if the
+// user does not have permission to view the board, no issues will be returned at all.
+// Issues returned from this resource include Agile fields, like sprint, closedSprints,
+// flagged, and epic. By default, the returned issues are ordered by rank.
+//
+// GET /rest/agile/1.0/board/{boardId}/backlog
+func (b *BoardsService) ListBacklogIssues(ctx context.Context, id int, opts *IssuesOptions) ([]*Issue, *Response, error) {
+
+	q := QueryParameters(opts)
+
+	req, err := b.client.NewRequest("GET", fmt.Sprintf("board/%d/backlog%s", id, q), nil)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	var wrap = &IssueWrap{}
+	resp, err := b.client.Do(ctx, req, wrap)
+	if err != nil {
+		return nil, resp, err
+	}
+
+	resp.MaxResults = wrap.MaxResults
+	resp.StartAt = wrap.StartAt
+	resp.IsLast = wrap.IsLast
+
+	return wrap.Values, resp, nil
+}
+
+// ListIssues returns all issues from a board, for a given board Id.
+// This only includes issues that the user has permission to view. Note,
+// if the user does not have permission to view the board, no issues will
+// be returned at all. Issues returned from this resource include Agile
+// fields, like sprint, closedSprints, flagged, and epic.
+// By default, the returned issues are ordered by rank.
+//
+// GET /rest/agile/1.0/board/{boardId}/issue
+func (b *BoardsService) ListIssues(ctx context.Context, id int, opts *IssuesOptions) ([]*Issue, *Response, error) {
+
+	q := QueryParameters(opts)
+
+	req, err := b.client.NewRequest("GET", fmt.Sprintf("board/%d/issue%s", id, q), nil)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	var wrap = &IssueWrap{}
+	resp, err := b.client.Do(ctx, req, wrap)
+	if err != nil {
+		return nil, resp, err
+	}
+
+	resp.MaxResults = wrap.MaxResults
+	resp.StartAt = wrap.StartAt
+	resp.IsLast = wrap.IsLast
+
+	return wrap.Values, resp, nil
 }

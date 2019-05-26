@@ -42,7 +42,7 @@ func main() {
 func listBoards(client *jira.Client) {
 	fmt.Println("LIST BOARD...")
 
-	opts := &jira.ListBoardsOptions{
+	opts := &jira.BoardsOptions{
 		ProjectKeyOrID: "CBD",
 		MaxResults:     1,
 	}
@@ -74,7 +74,7 @@ func getBoard(client *jira.Client) {
 func listEpics(client *jira.Client) {
 	fmt.Println("LIST EPICS...")
 
-	epics, _, err := client.Boards.ListEpics(context.Background(), 2881, &jira.ListEpicsOptions{})
+	epics, _, err := client.Boards.ListEpics(context.Background(), 2881, &jira.EpicsOptions{})
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -87,7 +87,7 @@ func listEpics(client *jira.Client) {
 func listBacklogIssues(client *jira.Client) {
 	fmt.Println("BACKLOG...")
 
-	issues, _, err := client.Boards.ListBacklogIssues(context.Background(), 2881, &jira.ListIssuesOptions{})
+	issues, _, err := client.Boards.ListBacklogIssues(context.Background(), 2881, &jira.IssuesOptions{})
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -101,7 +101,7 @@ func listBacklogIssues(client *jira.Client) {
 func listSprints(client *jira.Client) {
 	fmt.Println("LIST SPRINTS...")
 
-	sprints, _, err := client.Boards.ListSprints(context.Background(), 2881, &jira.ListSprintsOptions{})
+	sprints, _, err := client.Boards.ListSprints(context.Background(), 2881, &jira.SprintsOptions{})
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -115,7 +115,7 @@ func listSprints(client *jira.Client) {
 func listIssues(client *jira.Client) {
 	fmt.Println("ISSUES...")
 
-	issues, _, err := client.Boards.ListIssues(context.Background(), 2881, &jira.ListIssuesOptions{})
+	issues, _, err := client.Boards.ListIssues(context.Background(), 2881, &jira.IssuesOptions{})
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -129,7 +129,7 @@ func listIssues(client *jira.Client) {
 func listIssuesForEpic(client *jira.Client) {
 	fmt.Println("ISSUES FOR EPIC...")
 
-	issues, _, err := client.Boards.ListIssuesForEpic(context.Background(), 2881, 523967, &jira.ListIssuesOptions{})
+	issues, _, err := client.Boards.ListIssuesForEpic(context.Background(), 2881, 523967, &jira.IssuesOptions{})
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -143,13 +143,13 @@ func listIssuesForEpic(client *jira.Client) {
 func listIssuesWithoutEpic(client *jira.Client) {
 	fmt.Println("ISSUES WITHOUT EPIC...")
 
-	issues, _, err := client.Boards.ListIssuesWithoutEpic(context.Background(), 2881, &jira.ListIssuesOptions{})
+	issues, _, err := client.Boards.ListIssuesWithoutEpic(context.Background(), 2881, &jira.IssuesOptions{})
 	if err != nil {
 		log.Fatal(err)
 	}
 
 	for _, i := range issues {
-		fmt.Printf("\tid: %s, key: %s, reporter: %s, status: %s, epic: %s\n",
+		fmt.Printf("\tid: %s, key: %s, reporter: %s, status: %s, epic: %v\n",
 			i.ID, i.Key, i.Fields.Reporter.DisplayName, i.Fields.Status.Name, i.Fields.Epic)
 	}
 }
