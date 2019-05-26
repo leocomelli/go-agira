@@ -492,18 +492,18 @@ var issueAsJSON = `{
             "comment": {
             "comments": [
                 {
-                    "self": "https://jira.csc.com/rest/api/2/issue/864187/comment/1309127",
+                    "self": "https://jira.mycompany.com/rest/api/2/issue/864187/comment/1309127",
                     "id": "1309127",
                     "author": {
-                        "self": "https://jira.csc.com/rest/api/2/user?username=user3",
+                        "self": "https://jira.mycompany.com/rest/api/2/user?username=user3",
                         "name": "user3",
                         "key": "user3",
                         "emailAddress": "user3@mycompany.com",
                         "avatarUrls": {
-                            "48x48": "https://jira.csc.com/secure/useravatar?ownerId=user3&avatarId=20409",
-                            "24x24": "https://jira.csc.com/secure/useravatar?size=small&ownerId=user3&avatarId=20409",
-                            "16x16": "https://jira.csc.com/secure/useravatar?size=xsmall&ownerId=user3&avatarId=20409",
-                            "32x32": "https://jira.csc.com/secure/useravatar?size=medium&ownerId=user3&avatarId=20409"
+                            "48x48": "https://jira.mycompany.com/secure/useravatar?ownerId=user3&avatarId=20409",
+                            "24x24": "https://jira.mycompany.com/secure/useravatar?size=small&ownerId=user3&avatarId=20409",
+                            "16x16": "https://jira.mycompany.com/secure/useravatar?size=xsmall&ownerId=user3&avatarId=20409",
+                            "32x32": "https://jira.mycompany.com/secure/useravatar?size=medium&ownerId=user3&avatarId=20409"
                         },
                         "displayName": "User 3",
                         "active": true,
@@ -511,15 +511,15 @@ var issueAsJSON = `{
                     },
                     "body": "comment body",
                     "updateAuthor": {
-                        "self": "https://jira.csc.com/rest/api/2/user?username=user3",
+                        "self": "https://jira.mycompany.com/rest/api/2/user?username=user3",
                         "name": "user3",
                         "key": "user3",
                         "emailAddress": "user3@mycompany.com",
                         "avatarUrls": {
-                            "48x48": "https://jira.csc.com/secure/useravatar?ownerId=user3&avatarId=20409",
-                            "24x24": "https://jira.csc.com/secure/useravatar?size=small&ownerId=user3&avatarId=20409",
-                            "16x16": "https://jira.csc.com/secure/useravatar?size=xsmall&ownerId=user3&avatarId=20409",
-                            "32x32": "https://jira.csc.com/secure/useravatar?size=medium&ownerId=user3&avatarId=20409"
+                            "48x48": "https://jira.mycompany.com/secure/useravatar?ownerId=user3&avatarId=20409",
+                            "24x24": "https://jira.mycompany.com/secure/useravatar?size=small&ownerId=user3&avatarId=20409",
+                            "16x16": "https://jira.mycompany.com/secure/useravatar?size=xsmall&ownerId=user3&avatarId=20409",
+                            "32x32": "https://jira.mycompany.com/secure/useravatar?size=medium&ownerId=user3&avatarId=20409"
                         },
                         "displayName": "User 3",
                         "active": true,
@@ -529,18 +529,18 @@ var issueAsJSON = `{
                     "updated": "2019-05-22T02:04:43.000+0530"
                 },
                 {
-                    "self": "https://jira.csc.com/rest/api/2/issue/864187/comment/1311276",
+                    "self": "https://jira.mycompany.com/rest/api/2/issue/864187/comment/1311276",
                     "id": "1311276",
                     "author": {
-                        "self": "https://jira.csc.com/rest/api/2/user?username=user3",
+                        "self": "https://jira.mycompany.com/rest/api/2/user?username=user3",
                         "name": "user3",
                         "key": "user3",
                         "emailAddress": "user3@mycompany.com",
                         "avatarUrls": {
-                            "48x48": "https://jira.csc.com/secure/useravatar?ownerId=user3&avatarId=20409",
-                            "24x24": "https://jira.csc.com/secure/useravatar?size=small&ownerId=user3&avatarId=20409",
-                            "16x16": "https://jira.csc.com/secure/useravatar?size=xsmall&ownerId=user3&avatarId=20409",
-                            "32x32": "https://jira.csc.com/secure/useravatar?size=medium&ownerId=user3&avatarId=20409"
+                            "48x48": "https://jira.mycompany.com/secure/useravatar?ownerId=user3&avatarId=20409",
+                            "24x24": "https://jira.mycompany.com/secure/useravatar?size=small&ownerId=user3&avatarId=20409",
+                            "16x16": "https://jira.mycompany.com/secure/useravatar?size=xsmall&ownerId=user3&avatarId=20409",
+                            "32x32": "https://jira.mycompany.com/secure/useravatar?size=medium&ownerId=user3&avatarId=20409"
                         },
                         "displayName": "User 3",
                         "active": true,
@@ -548,15 +548,15 @@ var issueAsJSON = `{
                     },
                     "body": "[~user5] verifique se as soluções acima atendem as nossas necessidades.",
                     "updateAuthor": {
-                        "self": "https://jira.csc.com/rest/api/2/user?username=user3",
+                        "self": "https://jira.mycompany.com/rest/api/2/user?username=user3",
                         "name": "user3",
                         "key": "user3",
                         "emailAddress": "user3@mycompany.com",
                         "avatarUrls": {
-                            "48x48": "https://jira.csc.com/secure/useravatar?ownerId=user3&avatarId=20409",
-                            "24x24": "https://jira.csc.com/secure/useravatar?size=small&ownerId=user3&avatarId=20409",
-                            "16x16": "https://jira.csc.com/secure/useravatar?size=xsmall&ownerId=user3&avatarId=20409",
-                            "32x32": "https://jira.csc.com/secure/useravatar?size=medium&ownerId=user3&avatarId=20409"
+                            "48x48": "https://jira.mycompany.com/secure/useravatar?ownerId=user3&avatarId=20409",
+                            "24x24": "https://jira.mycompany.com/secure/useravatar?size=small&ownerId=user3&avatarId=20409",
+                            "16x16": "https://jira.mycompany.com/secure/useravatar?size=xsmall&ownerId=user3&avatarId=20409",
+                            "32x32": "https://jira.mycompany.com/secure/useravatar?size=medium&ownerId=user3&avatarId=20409"
                         },
                         "displayName": "User 3",
                         "active": true,

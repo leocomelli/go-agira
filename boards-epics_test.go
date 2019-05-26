@@ -17,7 +17,7 @@ func TestBoardsServiceListEpics(t *testing.T) {
 	mux.HandleFunc("/board/5259/epic", func(w http.ResponseWriter, r *http.Request) {
 		assert.Equal(t, "GET", r.Method)
 		fmt.Fprint(w, `{"maxResults": 50,"startAt": 0,"isLast": false,
-		"values": [{"id": 523967,"key": "CBD-9","self": "https://jira.csc.com/rest/agile/1.0/epic/523967","name": "Order","summary": "Order","color": {"key": "color_9"},"done": false}]}`)
+		"values": [{"id": 523967,"key": "CBD-9","self": "https://jira.mycompany.com/rest/agile/1.0/epic/523967","name": "Order","summary": "Order","color": {"key": "color_9"},"done": false}]}`)
 	})
 
 	sprints, resp, err := client.Boards.ListEpics(context.Background(), 5259, nil)
@@ -28,7 +28,7 @@ func TestBoardsServiceListEpics(t *testing.T) {
 		{
 			ID:       523967,
 			Key:      "CBD-9",
-			SelfLink: "https://jira.csc.com/rest/agile/1.0/epic/523967",
+			SelfLink: "https://jira.mycompany.com/rest/agile/1.0/epic/523967",
 			Name:     "Order",
 			Summary:  "Order",
 			Color:    map[string]string{"key": "color_9"},
