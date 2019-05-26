@@ -56,7 +56,7 @@ type IssueField struct {
 	Description                   string             `json:"description,omitempty"`
 	Sprint                        *Sprint            `json:"sprint,omitempty"`
 	ClosedSprints                 []*Sprint          `json:"closedSprints,omitempty"`
-	Project                       *IssueProject      `json:"project,omitempty"`
+	Project                       *Project           `json:"project,omitempty"`
 	Resolution                    *IssueResolution   `json:"resolution,omitempty"`
 	LastViewed                    DateTime           `json:"lastViewed,omitempty"`
 	AggregateTimeOriginalEstimate int                `json:"aggregatetimeoriginalestimate,omitempty"`
@@ -266,26 +266,6 @@ type IssueVersion struct {
 	Description string `json:"description,omitempty"`
 	Archived    bool   `json:"archived,omitempty"`
 	Released    bool   `json:"released,omitempty"`
-}
-
-// IssueProjectCategory represents the project category of Jira Issue
-type IssueProjectCategory struct {
-	ID          string `json:"id,omitempty"`
-	Name        string `json:"name,omitempty"`
-	SelfLink    string `json:"self,omitempty"`
-	Description string `json:"description,omitempty"`
-}
-
-// IssueProject represents a Jira Project
-type IssueProject struct {
-	ID         string               `json:"id,omitempty"`
-	Key        string               `json:"key,omitempty"`
-	Name       string               `json:"name,omitempty"`
-	SelfLink   string               `json:"self,omitempty"`
-	AvatarURLs map[string]string    `json:"avatarUrls,omitempty"`
-	Category   IssueProjectCategory `json:"projectCategory,omitempty"`
-	Simplified string               `json:"simplified,omitempty"`
-	Style      string               `json:"style,omitempty"`
 }
 
 // IssuesOptions contains all options to list backlog from a board
