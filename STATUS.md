@@ -17,14 +17,14 @@
 * [x] Get epics `GET /rest/agile/1.0/board/{boardId}/epic`
 * [x] Get issues for epic `GET /rest/agile/1.0/board/{boardId}/epic/{epicId}/issue`
 * [x] Get issues without epic `GET /rest/agile/1.0/board/{boardId}/epic/none/issue`
-* [ ] Get projects `GET /rest/agile/1.0/board/{boardId}/project`
+* [x] Get projects `GET /rest/agile/1.0/board/{boardId}/project`
 * [ ] Get properties keys `GET /rest/agile/1.0/board/{boardId}/properties`
 * [ ] Delete property `DELETE /rest/agile/1.0/board/{boardId}/properties/{propertyKey}`
 * [ ] Set property `PUT /rest/agile/1.0/board/{boardId}/properties/{propertyKey}`
 * [ ] Get property `GET /rest/agile/1.0/board/{boardId}/properties/{propertyKey}`
 * [x] Get all sprints `GET /rest/agile/1.0/board/{boardId}/sprint`
-* [ ] Get issues for sprint `GET /rest/agile/1.0/board/{boardId}/sprint/{sprintId}/issue`
-* [ ] Get all versions `GET /rest/agile/1.0/board/{boardId}/version`
+* [x] Get issues for sprint `GET /rest/agile/1.0/board/{boardId}/sprint/{sprintId}/issue`
+* [x] Get all versions `GET /rest/agile/1.0/board/{boardId}/version`
 
 ## Epic
 

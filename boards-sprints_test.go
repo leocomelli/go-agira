@@ -43,3 +43,17 @@ func TestBoardsServiceListSprints(t *testing.T) {
 	assert.Equal(t, 0, resp.StartAt)
 	assert.False(t, resp.IsLast)
 }
+
+func TestBoardsServiceListIssuesForSprint(t *testing.T) {
+	client, mux, _, teardown := setup()
+	defer teardown()
+
+	mux.HandleFunc("/board/5259/sprint/111/issue", func(w http.ResponseWriter, r *http.Request) {
+		assert.Equal(t, "GET", r.Method)
+		_, _ = fmt.Fprint(w, issueAsJSON)
+	})
+
+	backlog, _, err := client.Boards.ListIssuesForSprint(context.Background(), 5259, 111, nil)
+	assert.Nil(t, err)
+	assert.Len(t, backlog, 1)
+}

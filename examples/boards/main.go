@@ -38,6 +38,8 @@ func main() {
 	listIssuesForEpic(client)
 	listIssuesWithoutEpic(client)
 	listProjects(client)
+	listIssuesForSprint(client)
+	listVersions(client)
 }
 
 func listBoards(client *jira.Client) {
@@ -166,5 +168,33 @@ func listProjects(client *jira.Client) {
 	for _, p := range projects {
 		fmt.Printf("\tid: %s, key: %s, category: %v\n",
 			p.ID, p.Key, p.Category)
+	}
+}
+
+func listIssuesForSprint(client *jira.Client) {
+	fmt.Println("ISSUES FOR SPRINT...")
+
+	issues, _, err := client.Boards.ListIssuesForSprint(context.Background(), 2881, 10224, &jira.IssuesOptions{})
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	for _, i := range issues {
+		fmt.Printf("\tid: %s, key: %s, reporter: %s\n",
+			i.ID, i.Key, i.Fields.Reporter.DisplayName)
+	}
+}
+
+func listVersions(client *jira.Client) {
+	fmt.Println("VERSIONS...")
+
+	versions, _, err := client.Boards.ListVersions(context.Background(), 5597, &jira.VersionsOptions{})
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	for _, v := range versions {
+		fmt.Printf("\tid: %d, name: %s, released: %v, projectId: %v\n",
+			v.ID, v.Name, v.Released, v.ProjectID)
 	}
 }
