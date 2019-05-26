@@ -35,6 +35,7 @@ func main() {
 	listBacklogIssues(client)
 	listSprints(client)
 	listIssues(client)
+	listIssuesForEpic(client)
 }
 
 func listBoards(client *jira.Client) {
@@ -114,6 +115,20 @@ func listIssues(client *jira.Client) {
 	fmt.Println("ISSUES...")
 
 	issues, _, err := client.Boards.ListIssues(context.Background(), 2881, &jira.ListIssuesOptions{})
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	for _, i := range issues {
+		fmt.Printf("\tid: %s, key: %s, reporter: %s, status: %s\n",
+			i.ID, i.Key, i.Fields.Reporter.DisplayName, i.Fields.Status.Name)
+	}
+}
+
+func listIssuesForEpic(client *jira.Client) {
+	fmt.Println("ISSUES FOR EPIC...")
+
+	issues, _, err := client.Boards.ListIssuesForEpic(context.Background(), 2881, 523967, &jira.ListIssuesOptions{})
 	if err != nil {
 		log.Fatal(err)
 	}

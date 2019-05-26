@@ -42,3 +42,25 @@ func (b *BoardsService) ListEpics(ctx context.Context, boardID int, opts *ListEp
 
 	return wrap.Values, resp, nil
 }
+
+func (b *BoardsService) ListIssuesForEpic(ctx context.Context, id int, epicID int, opts *ListIssuesOptions) ([]*Issue, *Response, error) {
+
+	q := QueryParameters(opts)
+
+	req, err := b.client.NewRequest("GET", fmt.Sprintf("board/%d/epic/%d/issue%s", id, epicID, q), nil)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	var wrap = &IssueWrap{}
+	resp, err := b.client.Do(ctx, req, wrap)
+	if err != nil {
+		return nil, resp, err
+	}
+
+	resp.MaxResults = wrap.MaxResults
+	resp.StartAt = wrap.StartAt
+	resp.IsLast = wrap.IsLast
+
+	return wrap.Values, resp, nil
+}

@@ -40,3 +40,17 @@ func TestBoardsServiceListEpics(t *testing.T) {
 	assert.Equal(t, 0, resp.StartAt)
 	assert.False(t, resp.IsLast)
 }
+
+func TestBoardsServiceListIssuesForEpic(t *testing.T) {
+	client, mux, _, teardown := setup()
+	defer teardown()
+
+	mux.HandleFunc("/board/5259/epic/1/issue", func(w http.ResponseWriter, r *http.Request) {
+		assert.Equal(t, "GET", r.Method)
+		_, _ = fmt.Fprint(w, issue)
+	})
+
+	backlog, _, err := client.Boards.ListIssuesForEpic(context.Background(), 5259, 1, nil)
+	assert.Nil(t, err)
+	assert.Len(t, backlog, 1)
+}
