@@ -33,7 +33,7 @@
 * [ ] Delete epic `DELETE /rest/api/2/issue`
 * [x] Get epic `GET /rest/agile/1.0/epic/{epicIdOrKey}`
 * [ ] Partially update epic `POST /rest/agile/1.0/epic/{epicIdOrKey}`
-* [ ] Get issues for epic `GET /rest/agile/1.0/epic/{epicIdOrKey}/issue`
+* [x] Get issues for epic `GET /rest/agile/1.0/epic/{epicIdOrKey}/issue`
 * [ ] Move issues to epic `POST /rest/agile/1.0/epic/{epicIdOrKey}/issue`
 * [ ] Rank epics `PUT /rest/agile/1.0/epic/{epicIdOrKey}/rank`
 * [ ] Get issues without epic `GET /rest/agile/1.0/epic/none/issue`

@@ -39,11 +39,11 @@ type EpicsOptions struct {
 	Done bool `query:"done"`
 }
 
-// GetEpic returns the epic for a given epic Id.
+// Get returns the epic for a given epic Id.
 // This epic will only be returned if the user has permission to view it.
 //
 // GET /rest/agile/1.0/epic/{epicIdOrKey}
-func (b *EpicsService) GetEpic(ctx context.Context, idOrKey string) (*Epic, *Response, error) {
+func (b *EpicsService) Get(ctx context.Context, idOrKey string) (*Epic, *Response, error) {
 
 	req, err := b.client.NewRequest("GET", fmt.Sprintf("epic/%s", idOrKey), nil)
 	if err != nil {
@@ -57,4 +57,30 @@ func (b *EpicsService) GetEpic(ctx context.Context, idOrKey string) (*Epic, *Res
 	}
 
 	return epic, resp, nil
+}
+
+// ListIssues returns all issues that belong to the epic, for the given epic Id. This only includes
+// issues that the user has permission to view. Issues returned from this resource include Agile
+// fields, like sprint, closedSprints, flagged, and epic. By default, the returned issues are
+// ordered by rank.
+//
+// GET /rest/agile/1.0/epic/{epicIdOrKey}/issue
+func (b *EpicsService) ListIssues(ctx context.Context, idOrKey string, opts *IssuesOptions) ([]*Issue, *Response, error) {
+
+	req, err := b.client.NewRequest("GET", fmt.Sprintf("epic/%s/issue", idOrKey), nil)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	var wrap = &IssueWrap{}
+	resp, err := b.client.Do(ctx, req, wrap)
+	if err != nil {
+		return nil, resp, err
+	}
+
+	resp.MaxResults = wrap.MaxResults
+	resp.StartAt = wrap.StartAt
+	resp.IsLast = wrap.IsLast
+
+	return wrap.Values, resp, nil
 }
