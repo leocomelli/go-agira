@@ -25,6 +25,7 @@ type Client struct {
 	common service
 
 	Boards *BoardsService
+	Epics  *EpicsService
 }
 
 type service struct {
@@ -55,6 +56,7 @@ func NewClient(baseURL string, httpClient *http.Client) (*Client, error) {
 	}
 	c.common.client = c
 	c.Boards = (*BoardsService)(&c.common)
+	c.Epics = (*EpicsService)(&c.common)
 
 	return c, nil
 }

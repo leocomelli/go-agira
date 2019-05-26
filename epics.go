@@ -1,5 +1,16 @@
 package jira
 
+import (
+	"context"
+	"fmt"
+)
+
+// EpicsService handles communication with the epic related
+// methods of the Jira Agile API
+//
+// Jira Agile API docs: https://docs.atlassian.com/jira-software/REST/7.3.1/#agile/1.0/epic
+type EpicsService service
+
 // EpicWrap represents the data returned by the API,
 // in addition to the board information, paging data is returned
 type EpicWrap struct {
@@ -26,4 +37,24 @@ type EpicsOptions struct {
 	MaxResults int `query:"maxResults"`
 	//Filters results to epics that are either done or not done. Valid values: true, false.
 	Done bool `query:"done"`
+}
+
+// GetEpic returns the epic for a given epic Id.
+// This epic will only be returned if the user has permission to view it.
+//
+// GET /rest/agile/1.0/epic/{epicIdOrKey}
+func (b *EpicsService) GetEpic(ctx context.Context, idOrKey string) (*Epic, *Response, error) {
+
+	req, err := b.client.NewRequest("GET", fmt.Sprintf("epic/%s", idOrKey), nil)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	var epic = &Epic{}
+	resp, err := b.client.Do(ctx, req, epic)
+	if err != nil {
+		return nil, resp, err
+	}
+
+	return epic, resp, nil
 }

@@ -31,7 +31,7 @@
 * [ ] Create epic `POST /rest/api/2/issue`
 * [ ] Update issue specific fields of epic `PUT /rest/api/2/issue/{issueIdOrKey}`
 * [ ] Delete epic `DELETE /rest/api/2/issue`
-* [ ] Get epic `GET /rest/agile/1.0/epic/{epicIdOrKey}`
+* [x] Get epic `GET /rest/agile/1.0/epic/{epicIdOrKey}`
 * [ ] Partially update epic `POST /rest/agile/1.0/epic/{epicIdOrKey}`
 * [ ] Get issues for epic `GET /rest/agile/1.0/epic/{epicIdOrKey}/issue`
 * [ ] Move issues to epic `POST /rest/agile/1.0/epic/{epicIdOrKey}/issue`
