@@ -125,3 +125,94 @@ func TestBoardsServiceListIssues(t *testing.T) {
 	assert.Nil(t, err)
 	assert.Len(t, backlog, 1)
 }
+
+func TestBoardsServiceGetConfiguration(t *testing.T) {
+	client, mux, _, teardown := setup()
+	defer teardown()
+
+	mux.HandleFunc("/board/5597/configuration", func(w http.ResponseWriter, r *http.Request) {
+		assert.Equal(t, "GET", r.Method)
+		fmt.Fprint(w, `{
+			"id": 5597,
+			"name": "Board Configuration",
+			"self": "http://www.example.com/jira/rest/agile/1.0/board/84/config",
+			"filter": {
+				"id": "1001",
+				"self": "http://www.example.com/jira/filter/1001"
+			},
+			"columnConfig": {
+				"columns": [
+					{
+						"name": "To Do",
+						"statuses": [
+							{
+								"id": "1",
+								"self": "http://www.example.com/jira/status/1"
+							},
+							{
+								"id": "4",
+								"self": "http://www.example.com/jira/status/4"
+							}
+						]
+					},
+					{
+						"name": "In progress",
+						"statuses": [
+							{
+								"id": "3",
+								"self": "http://www.example.com/jira/status/3"
+							}
+						],
+						"min": 2,
+						"max": 4
+					},
+					{
+						"name": "Done",
+						"statuses": [
+							{
+								"id": "5",
+								"self": "http://www.example.com/jira/status/5"
+							}
+						]
+					}
+				],
+				"constraintType": "issueCount"
+			},
+			"estimation": {
+				"type": "field",
+				"field": {
+					"fieldId": "customfield_10002",
+					"displayName": "Story Points"
+				}
+			},
+			"ranking": {
+				"rankCustomFieldId": 10020
+			}
+		}`)
+	})
+
+	configuration, _, err := client.Boards.GetBoardConfiguration(context.Background(), 5597)
+	assert.Nil(t, err)
+
+	want := &Configuration{
+		ID:       5597,
+		SelfLink: "http://www.example.com/jira/rest/agile/1.0/board/84/config",
+		Name:     "Board Configuration",
+		Filter: ConfigurationFilter{
+			ID:       "1001",
+			SelfLink: "http://www.example.com/jira/filter/1001",
+		},
+		Estimation: ConfigurationEstimation{
+			Type: "field",
+			Field: ConfigurationEstimationField{
+				ID:   "customfield_10002",
+				Name: "Story Points",
+			},
+		},
+	}
+
+	assert.Equal(t, want.ID, configuration.ID)
+	assert.Equal(t, want.Name, configuration.Name)
+	assert.Equal(t, want.Estimation.Field.ID, configuration.Estimation.Field.ID)
+
+}
