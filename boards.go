@@ -5,10 +5,10 @@ import (
 	"fmt"
 )
 
-// BoardsService handles communication with the issue related
+// BoardsService handles communication with the board related
 // methods of the Jira Agile API
 //
-// Jira Agile API docs: https://developer.atlassian.com/cloud/jira/software/rest/#api-rest-agile-1-0-board-get
+// Jira Agile API docs: https://docs.atlassian.com/jira-software/REST/7.3.1/#agile/1.0/board
 type BoardsService service
 
 // BoardWrap represents the data returned by the API,
