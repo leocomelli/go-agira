@@ -10,6 +10,18 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
+func TestBoardsServiceDelete(t *testing.T) {
+	client, mux, _, teardown := setup()
+	defer teardown()
+
+	mux.HandleFunc("/board/9999", func(w http.ResponseWriter, r *http.Request) {
+		assert.Equal(t, "DELETE", r.Method)
+	})
+
+	_, err := client.Boards.DeleteBoard(context.Background(), 9999)
+	assert.Nil(t, err)
+}
+
 func TestBoardsServiceList(t *testing.T) {
 	client, mux, _, teardown := setup()
 	defer teardown()

@@ -55,6 +55,24 @@ type BoardsOptions struct {
 	ProjectLocation   string `query:"projectLocation"`
 }
 
+// DeleteBoard deletes the board.
+//
+// DELETE /rest/agile/1.0/board/{boardId}
+func (b *BoardsService) DeleteBoard(ctx context.Context, id int) (*Response, error) {
+
+	req, err := b.client.NewRequest("DELETE", fmt.Sprintf("board/%d", id), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	resp, err := b.client.Do(ctx, req, nil)
+	if err != nil {
+		return resp, err
+	}
+
+	return resp, nil
+}
+
 // ListBoards returns all boards
 // This only includes boards that the user has permission to view
 //

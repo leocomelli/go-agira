@@ -29,6 +29,7 @@ func main() {
 		log.Fatal(err)
 	}
 
+	deleteBoard(client)
 	listBoards(client)
 	getBoard(client)
 	listEpics(client)
@@ -40,6 +41,17 @@ func main() {
 	listProjects(client)
 	listIssuesForSprint(client)
 	listVersions(client)
+}
+
+func deleteBoard(client *jira.Client) {
+	fmt.Println("DELETE...")
+
+	resp, err := client.Boards.DeleteBoard(context.Background(), 5597)
+	if err != nil {
+		log.Println(err)
+	}
+
+	fmt.Println(resp.StatusCode)
 }
 
 func listBoards(client *jira.Client) {
@@ -188,7 +200,7 @@ func listIssuesForSprint(client *jira.Client) {
 func listVersions(client *jira.Client) {
 	fmt.Println("VERSIONS...")
 
-	versions, _, err := client.Boards.ListVersions(context.Background(), 5597, &jira.VersionsOptions{})
+	versions, _, err := client.Boards.ListVersions(context.Background(), 2881, &jira.VersionsOptions{})
 	if err != nil {
 		log.Fatal(err)
 	}
