@@ -34,6 +34,7 @@ func main() {
 	listEpics(client)
 	listBacklogIssues(client)
 	listSprints(client)
+	listIssues(client)
 }
 
 func listBoards(client *jira.Client) {
@@ -84,7 +85,7 @@ func listEpics(client *jira.Client) {
 func listBacklogIssues(client *jira.Client) {
 	fmt.Println("BACKLOG...")
 
-	issues, _, err := client.Boards.ListBacklogIssues(context.Background(), 2881, &jira.ListBacklogIssuesOptions{})
+	issues, _, err := client.Boards.ListBacklogIssues(context.Background(), 2881, &jira.ListIssuesOptions{})
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -106,5 +107,19 @@ func listSprints(client *jira.Client) {
 	for _, s := range sprints {
 		fmt.Printf("\tid: %d, name: %s, state: %s, start: %v, end: %v\n",
 			s.ID, s.Name, s.State, s.Start.Format(time.RFC3339Nano), s.End.Format(time.RFC3339Nano))
+	}
+}
+
+func listIssues(client *jira.Client) {
+	fmt.Println("ISSUES...")
+
+	issues, _, err := client.Boards.ListIssues(context.Background(), 2881, &jira.ListIssuesOptions{})
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	for _, i := range issues {
+		fmt.Printf("\tid: %s, key: %s, reporter: %s, status: %s\n",
+			i.ID, i.Key, i.Fields.Reporter.DisplayName, i.Fields.Status.Name)
 	}
 }

@@ -13,7 +13,7 @@
 * [ ] Delete board `DELETE /rest/agile/1.0/board/{boardId}`
 * [x] Get issues for backlog `GET /rest/agile/1.0/board/{boardId}/backlog`
 * [ ] Get configuration `GET /rest/agile/1.0/board/{boardId}/configuration`
-* [ ] Get issues for board `GET /rest/agile/1.0/board/{boardId}/issue`
+* [x] Get issues for board `GET /rest/agile/1.0/board/{boardId}/issue`
 * [x] Get epics `GET /rest/agile/1.0/board/{boardId}/epic`
 * [ ] Get issues for epic `GET /rest/agile/1.0/board/{boardId}/epic/{epicId}/issue`
 * [ ] Get issues without epic `GET /rest/agile/1.0/board/{boardId}/epic/none/issue`
