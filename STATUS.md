@@ -16,7 +16,7 @@
 * [x] Get issues for board `GET /rest/agile/1.0/board/{boardId}/issue`
 * [x] Get epics `GET /rest/agile/1.0/board/{boardId}/epic`
 * [x] Get issues for epic `GET /rest/agile/1.0/board/{boardId}/epic/{epicId}/issue`
-* [ ] Get issues without epic `GET /rest/agile/1.0/board/{boardId}/epic/none/issue`
+* [x] Get issues without epic `GET /rest/agile/1.0/board/{boardId}/epic/none/issue`
 * [ ] Get projects `GET /rest/agile/1.0/board/{boardId}/project`
 * [ ] Get properties keys `GET /rest/agile/1.0/board/{boardId}/properties`
 * [ ] Delete property `DELETE /rest/agile/1.0/board/{boardId}/properties/{propertyKey}`

@@ -36,6 +36,7 @@ func main() {
 	listSprints(client)
 	listIssues(client)
 	listIssuesForEpic(client)
+	listIssuesWithoutEpic(client)
 }
 
 func listBoards(client *jira.Client) {
@@ -134,7 +135,21 @@ func listIssuesForEpic(client *jira.Client) {
 	}
 
 	for _, i := range issues {
-		fmt.Printf("\tid: %s, key: %s, reporter: %s, status: %s\n",
-			i.ID, i.Key, i.Fields.Reporter.DisplayName, i.Fields.Status.Name)
+		fmt.Printf("\tid: %s, key: %s, reporter: %s, status: %s, epic: %s\n",
+			i.ID, i.Key, i.Fields.Reporter.DisplayName, i.Fields.Status.Name, i.Fields.Epic.Name)
+	}
+}
+
+func listIssuesWithoutEpic(client *jira.Client) {
+	fmt.Println("ISSUES WITHOUT EPIC...")
+
+	issues, _, err := client.Boards.ListIssuesWithoutEpic(context.Background(), 2881, &jira.ListIssuesOptions{})
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	for _, i := range issues {
+		fmt.Printf("\tid: %s, key: %s, reporter: %s, status: %s, epic: %s\n",
+			i.ID, i.Key, i.Fields.Reporter.DisplayName, i.Fields.Status.Name, i.Fields.Epic)
 	}
 }
