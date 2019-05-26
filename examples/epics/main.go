@@ -44,14 +44,29 @@ func main() {
 	}
 
 	getEpic(client)
+	listIssues(client)
 }
 
 func getEpic(client *jira.Client) {
 	fmt.Println("GET EPIC...")
-	epic, _, err := client.Epics.GetEpic(context.Background(), "523967")
+	epic, _, err := client.Epics.Get(context.Background(), "523967")
 	if err != nil {
 		log.Fatal(err)
 	}
 
 	fmt.Printf("\t%d - %s - %s\n", epic.ID, epic.Name, epic.Key)
+}
+
+func listIssues(client *jira.Client) {
+	fmt.Println("ISSUES...")
+
+	issues, _, err := client.Epics.ListIssues(context.Background(), "523967", &jira.IssuesOptions{})
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	for _, i := range issues {
+		fmt.Printf("\tid: %s, key: %s, reporter: %s, status: %s\n",
+			i.ID, i.Key, i.Fields.Reporter.DisplayName, i.Fields.Status.Name)
+	}
 }

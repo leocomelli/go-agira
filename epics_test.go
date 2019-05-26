@@ -19,7 +19,7 @@ func TestEpicsServiceGet(t *testing.T) {
 		fmt.Fprint(w, `{"id": 523967,"key": "MCP-9","self": "https://jira.mycompany.com/rest/agile/1.0/epic/523967","name": "Epic 1","summary": "Epic 1","color": {"key": "color_9"},"done": false}`)
 	})
 
-	epic, _, err := client.Epics.GetEpic(context.Background(), "5")
+	epic, _, err := client.Epics.Get(context.Background(), "5")
 	assert.Nil(t, err)
 
 	want := &Epic{
@@ -35,4 +35,18 @@ func TestEpicsServiceGet(t *testing.T) {
 	}
 
 	assert.True(t, reflect.DeepEqual(epic, want))
+}
+
+func TestEpicsServiceListIssues(t *testing.T) {
+	client, mux, _, teardown := setup()
+	defer teardown()
+
+	mux.HandleFunc("/epic/5259/issue", func(w http.ResponseWriter, r *http.Request) {
+		assert.Equal(t, "GET", r.Method)
+		_, _ = fmt.Fprint(w, issueAsJSON)
+	})
+
+	backlog, _, err := client.Epics.ListIssues(context.Background(), "5259", nil)
+	assert.Nil(t, err)
+	assert.Len(t, backlog, 1)
 }

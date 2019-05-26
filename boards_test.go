@@ -20,7 +20,7 @@ func TestBoardsServiceCreate(t *testing.T) {
 
 	})
 
-	b, _, err := client.Boards.CreateBoard(context.Background(), &NewBoard{})
+	b, _, err := client.Boards.Create(context.Background(), &NewBoard{})
 	assert.Nil(t, err)
 	assert.Equal(t, b.ID, 5597)
 }
@@ -33,7 +33,7 @@ func TestBoardsServiceDelete(t *testing.T) {
 		assert.Equal(t, "DELETE", r.Method)
 	})
 
-	_, err := client.Boards.DeleteBoard(context.Background(), 9999)
+	_, err := client.Boards.Delete(context.Background(), 9999)
 	assert.Nil(t, err)
 }
 
@@ -47,7 +47,7 @@ func TestBoardsServiceList(t *testing.T) {
 		"values": [{"id": 42,"self": "https://jira.com/rest/agile/1.0/board/42","name": "MTD board","type": "scrum"}]}`)
 	})
 
-	boards, resp, err := client.Boards.ListBoards(context.Background(), nil)
+	boards, resp, err := client.Boards.List(context.Background(), nil)
 	assert.Nil(t, err)
 	assert.Len(t, boards, 1)
 
@@ -74,7 +74,7 @@ func TestBoardsServiceGet(t *testing.T) {
 		fmt.Fprint(w, `{"id": 5597,"self": "https://jira.com/rest/agile/1.0/board/42","name": "MTD board","type": "scrum"}`)
 	})
 
-	board, _, err := client.Boards.GetBoard(context.Background(), 5597)
+	board, _, err := client.Boards.Get(context.Background(), 5597)
 	assert.Nil(t, err)
 
 	want := &Board{

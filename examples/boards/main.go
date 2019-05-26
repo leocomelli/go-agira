@@ -67,7 +67,7 @@ func createBoard(client *jira.Client) {
 
 	newBoard := &jira.NewBoard{Name: "BOARDTEST", Type: "scrum", FilterID: 40079}
 
-	b, resp, err := client.Boards.CreateBoard(context.Background(), newBoard)
+	b, resp, err := client.Boards.Create(context.Background(), newBoard)
 	if err != nil {
 		log.Println(err)
 	}
@@ -79,7 +79,7 @@ func createBoard(client *jira.Client) {
 func deleteBoard(client *jira.Client) {
 	fmt.Println("DELETE...")
 
-	resp, err := client.Boards.DeleteBoard(context.Background(), 5597)
+	resp, err := client.Boards.Delete(context.Background(), 5597)
 	if err != nil {
 		log.Println(err)
 	}
@@ -95,7 +95,7 @@ func listBoards(client *jira.Client) {
 		MaxResults:     1,
 	}
 
-	boards, resp, err := client.Boards.ListBoards(context.Background(), opts)
+	boards, resp, err := client.Boards.List(context.Background(), opts)
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -111,7 +111,7 @@ func listBoards(client *jira.Client) {
 
 func getBoard(client *jira.Client) {
 	fmt.Println("GET BOARD...")
-	board, _, err := client.Boards.GetBoard(context.Background(), 2881)
+	board, _, err := client.Boards.Get(context.Background(), 2881)
 	if err != nil {
 		log.Fatal(err)
 	}
