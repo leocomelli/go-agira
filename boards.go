@@ -67,10 +67,10 @@ type BoardsOptions struct {
 	ProjectLocation   string `query:"projectLocation"`
 }
 
-// CreateBoard creates a new board. Board name, type and filter Id is required.
+// Create creates a new board. Board name, type and filter Id is required.
 //
 // POST /rest/agile/1.0/board
-func (b *BoardsService) CreateBoard(ctx context.Context, newBoard *NewBoard) (*Board, *Response, error) {
+func (b *BoardsService) Create(ctx context.Context, newBoard *NewBoard) (*Board, *Response, error) {
 
 	req, err := b.client.NewRequest("POST", "board", newBoard)
 	if err != nil {
@@ -86,10 +86,10 @@ func (b *BoardsService) CreateBoard(ctx context.Context, newBoard *NewBoard) (*B
 	return board, resp, nil
 }
 
-// DeleteBoard deletes the board.
+// Delete deletes the board.
 //
 // DELETE /rest/agile/1.0/board/{boardId}
-func (b *BoardsService) DeleteBoard(ctx context.Context, id int) (*Response, error) {
+func (b *BoardsService) Delete(ctx context.Context, id int) (*Response, error) {
 
 	req, err := b.client.NewRequest("DELETE", fmt.Sprintf("board/%d", id), nil)
 	if err != nil {
@@ -104,11 +104,11 @@ func (b *BoardsService) DeleteBoard(ctx context.Context, id int) (*Response, err
 	return resp, nil
 }
 
-// ListBoards returns all boards
+// List returns all boards
 // This only includes boards that the user has permission to view
 //
 // GET /rest/agile/1.0/board
-func (b *BoardsService) ListBoards(ctx context.Context, opts *BoardsOptions) ([]*Board, *Response, error) {
+func (b *BoardsService) List(ctx context.Context, opts *BoardsOptions) ([]*Board, *Response, error) {
 
 	q := QueryParameters(opts)
 
@@ -130,11 +130,11 @@ func (b *BoardsService) ListBoards(ctx context.Context, opts *BoardsOptions) ([]
 	return wrap.Values, resp, nil
 }
 
-// GetBoard returns the board for the given board Id.
+// Get returns the board for the given board Id.
 // This board will only be returned if the user has permission to view it.
 //
 // GET /rest/agile/1.0/board/{boardId}
-func (b *BoardsService) GetBoard(ctx context.Context, boardID int) (*Board, *Response, error) {
+func (b *BoardsService) Get(ctx context.Context, boardID int) (*Board, *Response, error) {
 
 	req, err := b.client.NewRequest("GET", fmt.Sprintf("board/%d", boardID), nil)
 	if err != nil {
