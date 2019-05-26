@@ -5,17 +5,32 @@ import (
 	"fmt"
 	"log"
 	"os"
+	"strconv"
 	"time"
 
 	"github.com/leocomelli/jira"
 )
 
-var url, user, pass string
+var (
+	url, user, pass string
+	write           bool
+	err             error
+)
 
 func init() {
 	url = os.Getenv("JIRA_URL")
 	user = os.Getenv("JIRA_USER")
 	pass = os.Getenv("JIRA_PASS")
+
+	writeStr := os.Getenv("JIRA_WRITE_SRV")
+	if writeStr == "" {
+		writeStr = "false"
+	}
+
+	write, err = strconv.ParseBool(writeStr)
+	if err != nil {
+		log.Fatal(err)
+	}
 }
 
 func main() {
@@ -29,7 +44,10 @@ func main() {
 		log.Fatal(err)
 	}
 
-	deleteBoard(client)
+	if write {
+		createBoard(client)
+		deleteBoard(client)
+	}
 	listBoards(client)
 	getBoard(client)
 	listEpics(client)
@@ -41,6 +59,20 @@ func main() {
 	listProjects(client)
 	listIssuesForSprint(client)
 	listVersions(client)
+}
+
+func createBoard(client *jira.Client) {
+	fmt.Println("CREATE...")
+
+	newBoard := &jira.NewBoard{Name: "BOARDTEST", Type: "scrum", FilterID: 40079}
+
+	b, resp, err := client.Boards.CreateBoard(context.Background(), newBoard)
+	if err != nil {
+		log.Println(err)
+	}
+
+	fmt.Println(resp.StatusCode)
+	fmt.Println(b.ID)
 }
 
 func deleteBoard(client *jira.Client) {
