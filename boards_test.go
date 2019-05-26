@@ -10,6 +10,21 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
+func TestBoardsServiceCreate(t *testing.T) {
+	client, mux, _, teardown := setup()
+	defer teardown()
+
+	mux.HandleFunc("/board", func(w http.ResponseWriter, r *http.Request) {
+		assert.Equal(t, "POST", r.Method)
+		fmt.Fprint(w, `{"id": 5597,"self": "https://jira.com/rest/agile/1.0/board/42","name": "MTD board","type": "scrum"}`)
+
+	})
+
+	b, _, err := client.Boards.CreateBoard(context.Background(), &NewBoard{})
+	assert.Nil(t, err)
+	assert.Equal(t, b.ID, 5597)
+}
+
 func TestBoardsServiceDelete(t *testing.T) {
 	client, mux, _, teardown := setup()
 	defer teardown()

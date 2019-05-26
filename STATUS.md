@@ -8,9 +8,9 @@
 ## Board
 
 * [x] Get all boards `GET /rest/agile/1.0/board`
-* [ ] Create board `POST /rest/agile/1.0/board`
+* [x] Create board `POST /rest/agile/1.0/board`
 * [x] Get board `GET /rest/agile/1.0/board/{boardId}`
-* [ ] Delete board `DELETE /rest/agile/1.0/board/{boardId}`
+* [x] Delete board `DELETE /rest/agile/1.0/board/{boardId}`
 * [x] Get issues for backlog `GET /rest/agile/1.0/board/{boardId}/backlog`
 * [ ] Get configuration `GET /rest/agile/1.0/board/{boardId}/configuration`
 * [x] Get issues for board `GET /rest/agile/1.0/board/{boardId}/issue`

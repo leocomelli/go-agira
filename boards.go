@@ -26,6 +26,18 @@ type Board struct {
 	SelfLink string `json:"self,omitempty"`
 }
 
+// NewBoard contains all options to create a board
+type NewBoard struct {
+	//Must be less than 255 characters.
+	Name string `json:"name,omitempty"`
+	//Valid values: scrum, kanban
+	Type string `json:"type,omitempty"`
+	//Id of a filter that the user has permissions to view. Note, if the user does not have the
+	// 'Create shared objects' permission and tries to create a shared board, a private board will
+	// be created instead (remember that board sharing depends on the filter sharing).
+	FilterID int `json:"filterId,omitempty"`
+}
+
 // BoardsOptions contains all options to list boards
 type BoardsOptions struct {
 	//The starting index of the returned boards. Base index: 0. See the 'Pagination' section at the top of this page for more details.
@@ -53,6 +65,25 @@ type BoardsOptions struct {
 	UserKeyLocation   string `query:"userkeyLocation"`
 	UsernameLocation  string `query:"usernameLocation"`
 	ProjectLocation   string `query:"projectLocation"`
+}
+
+// CreateBoard creates a new board. Board name, type and filter Id is required.
+//
+// POST /rest/agile/1.0/board
+func (b *BoardsService) CreateBoard(ctx context.Context, newBoard *NewBoard) (*Board, *Response, error) {
+
+	req, err := b.client.NewRequest("POST", "board", newBoard)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	var board = &Board{}
+	resp, err := b.client.Do(ctx, req, board)
+	if err != nil {
+		return nil, resp, err
+	}
+
+	return board, resp, nil
 }
 
 // DeleteBoard deletes the board.
