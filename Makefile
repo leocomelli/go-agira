@@ -5,7 +5,7 @@
 GOFILES	= $(shell find . -type f -name '*.go' -not -path "./.git/*")
 
 setup:
-	@go get -u golang.org/x/lint/golint
+	@go get golang.org/x/lint/golint
 	@go get golang.org/x/tools/cmd/goimports	
 
 build:
