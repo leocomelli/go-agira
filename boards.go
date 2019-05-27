@@ -269,11 +269,11 @@ func (b *BoardsService) ListIssues(ctx context.Context, id int, opts *IssuesOpti
 	return wrap.Values, resp, nil
 }
 
-// GetBoardConfiguration returns the board configuration for the given board Id.
+// GetConfiguration returns the board configuration for the given board Id.
 // This board configuration will only be returned if the user has permission to view it.
 //
 // GET /rest/agile/1.0/board/{boardId}/configuration
-func (b *BoardsService) GetBoardConfiguration(ctx context.Context, boardID int) (*Configuration, *Response, error) {
+func (b *BoardsService) GetConfiguration(ctx context.Context, boardID int) (*Configuration, *Response, error) {
 
 	req, err := b.client.NewRequest("GET", fmt.Sprintf("board/%d/configuration", boardID), nil)
 	if err != nil {

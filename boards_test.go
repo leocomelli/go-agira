@@ -191,7 +191,7 @@ func TestBoardsServiceGetConfiguration(t *testing.T) {
 		}`)
 	})
 
-	configuration, _, err := client.Boards.GetBoardConfiguration(context.Background(), 5597)
+	configuration, _, err := client.Boards.GetConfiguration(context.Background(), 5597)
 	assert.Nil(t, err)
 
 	want := &Configuration{

@@ -50,7 +50,7 @@ func main() {
 	}
 	listBoards(client)
 	getBoard(client)
-	getBoardConfiguration(client)
+	getConfiguration(client)
 	listEpics(client)
 	listBacklogIssues(client)
 	listSprints(client)
@@ -119,9 +119,9 @@ func getBoard(client *jira.Client) {
 	fmt.Printf("\t%d - %s - %s\n", board.ID, board.Name, board.Type)
 }
 
-func getBoardConfiguration(client *jira.Client) {
+func getConfiguration(client *jira.Client) {
 	fmt.Println("GET BOARD CONFIGURATION...")
-	configuration, _, err := client.Boards.GetBoardConfiguration(context.Background(), 2881)
+	configuration, _, err := client.Boards.GetConfiguration(context.Background(), 2881)
 	if err != nil {
 		log.Fatal(err)
 	}
