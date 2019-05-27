@@ -67,6 +67,65 @@ type BoardsOptions struct {
 	ProjectLocation   string `query:"projectLocation"`
 }
 
+// ConfigurationFilter represents a Jira Agile Board Configuration Filter
+type ConfigurationFilter struct {
+	ID       string `json:"id,omitempty"`
+	SelfLink string `json:"self,omitempty"`
+}
+
+// ConfigurationEstimationField represents a Jira Agile Board Configuration Estimation Field
+type ConfigurationEstimationField struct {
+	ID   string `json:"fieldId,omitempty"`
+	Name string `json:"displayName,omitempty"`
+}
+
+// ConfigurationEstimation represents a Jira Agile Board Configuration Estimation
+type ConfigurationEstimation struct {
+	Type  string                       `json:"type,omitempty"`
+	Field ConfigurationEstimationField `json:"field,omitempty"`
+}
+
+// ConfigurationRanking represents a Jira Agile Board Configuration Ranking
+type ConfigurationRanking struct {
+	CustomFieldID int `json:"rankCustomFieldId,omitempty"`
+}
+
+// ConfigurationStatus represents a Jira Agile Board Configuration Status
+type ConfigurationStatus struct {
+	ID       string `json:"id,omitempty"`
+	SelfLink string `json:"self,omitempty"`
+}
+
+// ConfigurationColumn represents a Jira Agile Board Configuration Column
+type ConfigurationColumn struct {
+	Name     string                 `json:"name,omitempty"`
+	Statuses []*ConfigurationStatus `json:"statuses,omitempty"`
+	Minimum  int                    `json:"min,omitempty"`
+	Maximum  int                    `json:"max,omitempty"`
+}
+
+// ColumnConfiguration represents a Jira Agile Board Configuration Column Configuration
+type ColumnConfiguration struct {
+	Columns        []*ConfigurationColumn `json:"columns,omitempty"`
+	ConstraintType string                 `json:"constraintType,omitempty"`
+}
+
+// Configuration represents a Jira Agile Board Configuration
+type Configuration struct {
+	ID                  int                     `json:"id,omitempty"`
+	Name                string                  `json:"name,omitempty"`
+	SelfLink            string                  `json:"self,omitempty"`
+	SubQuery            string                  `json:"subQuery,omitempty"`
+	Filter              ConfigurationFilter     `json:"filter,omitempty"`
+	Estimation          ConfigurationEstimation `json:"estimation,omitempty"`
+	Ranking             ConfigurationRanking    `json:"ranking,omitempty"`
+	ColumnConfiguration ColumnConfiguration     `json:"columnConfig,omitempty"`
+}
+
+func (s Configuration) String() string {
+	return s.Name
+}
+
 // Create creates a new board. Board name, type and filter Id is required.
 //
 // POST /rest/agile/1.0/board
@@ -208,4 +267,24 @@ func (b *BoardsService) ListIssues(ctx context.Context, id int, opts *IssuesOpti
 	resp.IsLast = wrap.IsLast
 
 	return wrap.Values, resp, nil
+}
+
+// GetConfiguration returns the board configuration for the given board Id.
+// This board configuration will only be returned if the user has permission to view it.
+//
+// GET /rest/agile/1.0/board/{boardId}/configuration
+func (b *BoardsService) GetConfiguration(ctx context.Context, boardID int) (*Configuration, *Response, error) {
+
+	req, err := b.client.NewRequest("GET", fmt.Sprintf("board/%d/configuration", boardID), nil)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	var configuration = &Configuration{}
+	resp, err := b.client.Do(ctx, req, configuration)
+	if err != nil {
+		return nil, resp, err
+	}
+
+	return configuration, resp, nil
 }
