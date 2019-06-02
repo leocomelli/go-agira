@@ -77,3 +77,21 @@ func TestEpicsServicePartiallyUpdate(t *testing.T) {
 
 	assert.True(t, reflect.DeepEqual(epic, want))
 }
+
+func TestEpicsServiceMoveIssuesTo(t *testing.T) {
+	client, mux, _, teardown := setup()
+	defer teardown()
+
+	mux.HandleFunc("/epic/5/issue", func(w http.ResponseWriter, r *http.Request) {
+		assert.Equal(t, "POST", r.Method)
+		w.WriteHeader(http.StatusNoContent)
+	})
+
+	issues := &IssueKeys{
+		Issues: []string{"MCP-1", "MCP-2"},
+	}
+
+	ok, err := client.Epics.MoveIssuesTo(context.Background(), "5", issues)
+	assert.Nil(t, err)
+	assert.True(t, ok)
+}

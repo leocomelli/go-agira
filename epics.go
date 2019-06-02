@@ -3,6 +3,7 @@ package jira
 import (
 	"context"
 	"fmt"
+	"net/http"
 )
 
 // EpicsService handles communication with the epic related
@@ -37,6 +38,12 @@ type EpicsOptions struct {
 	MaxResults int `query:"maxResults"`
 	//Filters results to epics that are either done or not done. Valid values: true, false.
 	Done bool `query:"done"`
+}
+
+// IssueKeys constains the issue key to perform the actions
+// For example: MoveIssuesTo(...)
+type IssueKeys struct {
+	Issues []string `json:"issues,omitempty"`
 }
 
 // Get returns the epic for a given epic Id.
@@ -102,4 +109,29 @@ func (b *EpicsService) PartiallyUpdate(ctx context.Context, idOrKey string, epic
 	}
 
 	return updatedEpic, resp, nil
+}
+
+// MoveIssuesTo moves issues to an epic, for a given epic id. Issues can be only in a single epic
+// at the same time. That means that already assigned issues to an epic, will not be assigned to
+// the previous epic anymore. The user needs to have the edit issue permission for all issue
+// they want to move and to the epic. The maximum number of issues that can be moved in one
+// operation is 50.
+//
+// POST /rest/agile/1.0/epic/{epicIdOrKey}/issue
+func (b *EpicsService) MoveIssuesTo(ctx context.Context, idOrKey string, issueKeys *IssueKeys) (bool, error) {
+	req, err := b.client.NewRequest("POST", fmt.Sprintf("epic/%s/issue", idOrKey), issueKeys)
+	if err != nil {
+		return false, err
+	}
+
+	resp, err := b.client.Do(ctx, req, nil)
+	if err != nil {
+		return false, err
+	}
+
+	if resp.StatusCode == http.StatusNoContent {
+		return true, nil
+	}
+
+	return false, nil
 }

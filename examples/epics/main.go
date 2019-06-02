@@ -1,7 +1,6 @@
 package main
 
 import (
-	"bytes"
 	"context"
 	"fmt"
 	"log"
@@ -48,6 +47,7 @@ func main() {
 	listIssues(client)
 	if write {
 		partiallyUpdate(client)
+		moveIssuesTo(client)
 	}
 }
 
@@ -82,15 +82,25 @@ func partiallyUpdate(client *jira.Client) {
 		Name: "C.C.",
 	}
 
-	updatedEpic, resp, err := client.Epics.PartiallyUpdate(context.Background(), "523967", epic)
+	updatedEpic, _, err := client.Epics.PartiallyUpdate(context.Background(), "523967", epic)
 	if err != nil {
-		buf := new(bytes.Buffer)
-		buf.ReadFrom(resp.Body)
-		newStr := buf.String()
-		log.Println(resp.StatusCode)
-		log.Println(newStr)
 		log.Fatal(err)
 	}
 
 	fmt.Printf("epic: %d - %s - %s - %s\n", updatedEpic.ID, updatedEpic.Name, updatedEpic.Key, updatedEpic.Color)
+}
+
+func moveIssuesTo(client *jira.Client) {
+	fmt.Println("MOVE ISSUES TO...")
+
+	keys := &jira.IssueKeys{
+		Issues: []string{"MCP-695"},
+	}
+
+	ok, err := client.Epics.MoveIssuesTo(context.Background(), "523967", keys)
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	fmt.Printf("\t%v", ok)
 }
