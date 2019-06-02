@@ -31,10 +31,12 @@ func TestBoardsServiceDelete(t *testing.T) {
 
 	mux.HandleFunc("/board/9999", func(w http.ResponseWriter, r *http.Request) {
 		assert.Equal(t, "DELETE", r.Method)
+		w.WriteHeader(http.StatusNoContent)
 	})
 
-	_, err := client.Boards.Delete(context.Background(), 9999)
+	ok, _, err := client.Boards.Delete(context.Background(), 9999)
 	assert.Nil(t, err)
+	assert.True(t, ok)
 }
 
 func TestBoardsServiceList(t *testing.T) {

@@ -3,6 +3,7 @@ package jira
 import (
 	"context"
 	"fmt"
+	"net/http"
 )
 
 // BoardsService handles communication with the board related
@@ -148,19 +149,23 @@ func (b *BoardsService) Create(ctx context.Context, newBoard *NewBoard) (*Board,
 // Delete deletes the board.
 //
 // DELETE /rest/agile/1.0/board/{boardId}
-func (b *BoardsService) Delete(ctx context.Context, id int) (*Response, error) {
+func (b *BoardsService) Delete(ctx context.Context, id int) (bool, *Response, error) {
 
 	req, err := b.client.NewRequest("DELETE", fmt.Sprintf("board/%d", id), nil)
 	if err != nil {
-		return nil, err
+		return false, nil, err
 	}
 
 	resp, err := b.client.Do(ctx, req, nil)
 	if err != nil {
-		return resp, err
+		return false, resp, err
 	}
 
-	return resp, nil
+	if resp.StatusCode == http.StatusNoContent {
+		return true, resp, nil
+	}
+
+	return false, resp, nil
 }
 
 // List returns all boards
