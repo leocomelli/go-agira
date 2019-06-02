@@ -99,7 +99,7 @@ func moveIssuesTo(client *jira.Client) {
 		Issues: []string{"MCP-695"},
 	}
 
-	ok, err := client.Epics.MoveIssuesTo(context.Background(), "523967", keys)
+	ok, _, err := client.Epics.MoveIssuesTo(context.Background(), "523967", keys)
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -114,7 +114,7 @@ func removeIssuesFrom(client *jira.Client) {
 		Issues: []string{"MCP-695"},
 	}
 
-	ok, err := client.Epics.RemoveIssuesFrom(context.Background(), keys)
+	ok, _, err := client.Epics.RemoveIssuesFrom(context.Background(), keys)
 	if err != nil {
 		log.Fatal(err)
 	}
