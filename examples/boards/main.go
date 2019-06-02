@@ -79,11 +79,12 @@ func createBoard(client *jira.Client) {
 func deleteBoard(client *jira.Client) {
 	fmt.Println("DELETE...")
 
-	resp, err := client.Boards.Delete(context.Background(), 5597)
+	ok, resp, err := client.Boards.Delete(context.Background(), 5597)
 	if err != nil {
 		log.Println(err)
 	}
 
+	fmt.Println(ok)
 	fmt.Println(resp.StatusCode)
 }
 
