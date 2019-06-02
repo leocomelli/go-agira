@@ -46,16 +46,44 @@ func TestSprintsServiceGet(t *testing.T) {
 	sprint, _, err := client.Sprints.Get(context.Background(), 5259)
 	assert.Nil(t, err)
 
+	start := time.Date(2018, 9, 18, 17, 30, 0, 0, time.UTC)
+	end := time.Date(2018, 9, 19, 1, 30, 0, 0, time.UTC)
+	complete := time.Date(2018, 9, 19, 3, 0, 0, 0, time.UTC)
+
 	want := &Sprint{
 		ID:       5259,
 		SelfLink: "https://jira.mycompany.com/rest/agile/1.0/sprint/5259",
 		State:    "closed",
 		Name:     "Sprint 001",
-		Start:    time.Date(2018, 9, 18, 17, 30, 0, 0, time.UTC),
-		End:      time.Date(2018, 9, 19, 1, 30, 0, 0, time.UTC),
-		Complete: time.Date(2018, 9, 19, 3, 0, 0, 0, time.UTC),
+		Start:    &start,
+		End:      &end,
+		Complete: &complete,
 		BoardID:  2881,
 		Goal:     "My goal",
 	}
 	assert.True(t, reflect.DeepEqual(sprint, want))
+}
+
+func TestSprintsServiceUpdate(t *testing.T) {
+	client, mux, _, teardown := setup()
+	defer teardown()
+
+	mux.HandleFunc("/sprint/11392", func(w http.ResponseWriter, r *http.Request) {
+		assert.Equal(t, "PUT", r.Method)
+		fmt.Fprint(w, `{"id": 5259,"self": "https://jira.mycompany.com/rest/agile/1.0/sprint/5259","state": "open","name": "Sprint 001 XXX","originBoardId": 2881,"goal": "I do not know"}`)
+	})
+
+	newSprint := &Sprint{
+		Name:    "Sprint 001 XXX",
+		Goal:    "I do not know",
+		BoardID: 2881,
+	}
+
+	sprint, _, err := client.Sprints.Update(context.Background(), 11392, newSprint)
+	assert.Nil(t, err)
+
+	assert.NotNil(t, sprint)
+	assert.Equal(t, "Sprint 001 XXX", sprint.Name)
+	assert.Equal(t, 2881, sprint.BoardID)
+	assert.Equal(t, "I do not know", sprint.Goal)
 }

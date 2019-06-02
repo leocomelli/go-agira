@@ -25,15 +25,19 @@ func TestBoardsServiceListSprints(t *testing.T) {
 	assert.Nil(t, err)
 	assert.Len(t, sprints, 1)
 
+	start := time.Date(2018, 9, 18, 17, 30, 0, 0, time.UTC)
+	end := time.Date(2018, 9, 19, 1, 30, 0, 0, time.UTC)
+	complete := time.Date(2018, 9, 19, 3, 0, 0, 0, time.UTC)
+
 	want := []*Sprint{
 		{
 			ID:       5259,
 			SelfLink: "https://jira.mycompany.com/rest/agile/1.0/sprint/5259",
 			State:    "closed",
 			Name:     "Sprint 001",
-			Start:    time.Date(2018, 9, 18, 17, 30, 0, 0, time.UTC),
-			End:      time.Date(2018, 9, 19, 1, 30, 0, 0, time.UTC),
-			Complete: time.Date(2018, 9, 19, 3, 0, 0, 0, time.UTC),
+			Start:    &start,
+			End:      &end,
+			Complete: &complete,
 			BoardID:  2881,
 			Goal:     "My goal",
 		},

@@ -21,15 +21,15 @@ type SprintWrap struct {
 
 // Sprint represents a Jira Agile Sprint
 type Sprint struct {
-	ID       int       `json:"id,omitempty"`
-	Name     string    `json:"name,omitempty"`
-	State    string    `json:"state,omitempty"`
-	SelfLink string    `json:"self,omitempty"`
-	Start    time.Time `json:"startDate,omitempty"`
-	End      time.Time `json:"endDate,omitempty"`
-	Complete time.Time `json:"completeDate,omitempty"`
-	BoardID  int       `json:"originBoardId,omitempty"`
-	Goal     string    `json:"goal,omitempty"`
+	ID       int        `json:"id,omitempty"`
+	Name     string     `json:"name,omitempty"`
+	State    string     `json:"state,omitempty"`
+	SelfLink string     `json:"self,omitempty"`
+	Start    *time.Time `json:"startDate,omitempty"`
+	End      *time.Time `json:"endDate,omitempty"`
+	Complete *time.Time `json:"completeDate,omitempty"`
+	BoardID  int        `json:"originBoardId,omitempty"`
+	Goal     string     `json:"goal,omitempty"`
 }
 
 // NewSprint contains all options to create a sprint
@@ -79,6 +79,35 @@ func (s *SprintsService) Create(ctx context.Context, newSprint *NewSprint) (*Spr
 func (s *SprintsService) Get(ctx context.Context, sprintID int) (*Sprint, *Response, error) {
 
 	req, err := s.client.NewRequest("GET", fmt.Sprintf("sprint/%d", sprintID), nil)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	var sprint = &Sprint{}
+	resp, err := s.client.Do(ctx, req, sprint)
+	if err != nil {
+		return nil, resp, err
+	}
+
+	return sprint, resp, nil
+}
+
+// Update performs a full update of a sprint. A full update means that the result will be
+// exactly the same as the request body. Any fields not present in the request JSON will
+// be set to null.
+//
+// Notes:
+// - Sprints that are in a closed state cannot be updated.
+// - A sprint can be started by updating the state to 'active'. This requires the sprint to
+// be in the 'future' state and have a startDate and endDate set.
+// - A sprint can be completed by updating the state to 'closed'. This action requires the
+// sprint to be in the 'active' state. This sets the completeDate to the time of the
+// request.
+// - Other changes to state are not allowed.
+// - The completeDate field cannot be updated manually.
+func (s *SprintsService) Update(ctx context.Context, sprintID int, sprintInfo *Sprint) (*Sprint, *Response, error) {
+
+	req, err := s.client.NewRequest("PUT", fmt.Sprintf("sprint/%d", sprintID), sprintInfo)
 	if err != nil {
 		return nil, nil, err
 	}
