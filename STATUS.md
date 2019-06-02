@@ -49,7 +49,7 @@
 ## Sprint 
 
 * [x] Create sprint `POST /rest/agile/1.0/sprint`
-* [ ] Get sprint `GET /rest/agile/1.0/sprint/{sprintId}`
+* [x] Get sprint `GET /rest/agile/1.0/sprint/{sprintId}`
 * [ ] Update sprint `PUT /rest/agile/1.0/sprint/{sprintId}`
 * [ ] Partially update sprint `POST /rest/agile/1.0/sprint/{sprintId}`
 * [ ] Delete sprint `DELETE /rest/agile/1.0/sprint/{sprintId}`

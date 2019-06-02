@@ -43,6 +43,7 @@ func main() {
 		log.Fatal(err)
 	}
 
+	getSprint(client)
 	if write {
 		createSprint(client)
 	}
@@ -62,4 +63,14 @@ func createSprint(client *jira.Client) {
 	}
 
 	fmt.Printf("\t%s - %d\n", sprint.Name, sprint.BoardID)
+}
+
+func getSprint(client *jira.Client) {
+	fmt.Println("GET SPRINT...")
+	sprint, _, err := client.Sprints.Get(context.Background(), 11392)
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	fmt.Printf("\t%d - %s - %d - %v\n", sprint.ID, sprint.Name, sprint.BoardID, sprint.Start)
 }

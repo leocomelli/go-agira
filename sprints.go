@@ -2,6 +2,7 @@ package jira
 
 import (
 	"context"
+	"fmt"
 	"time"
 )
 
@@ -58,6 +59,26 @@ type SprintsOptions struct {
 func (s *SprintsService) Create(ctx context.Context, newSprint *NewSprint) (*Sprint, *Response, error) {
 
 	req, err := s.client.NewRequest("POST", "sprint", newSprint)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	var sprint = &Sprint{}
+	resp, err := s.client.Do(ctx, req, sprint)
+	if err != nil {
+		return nil, resp, err
+	}
+
+	return sprint, resp, nil
+}
+
+// Get returns the sprint for a given sprint Id. The sprint will only be returned if the user can view
+// the board that the sprint was created on, or view at least one of the issues in the sprint.
+//
+// GET /rest/agile/1.0/sprint/{sprintId}
+func (s *SprintsService) Get(ctx context.Context, sprintID int) (*Sprint, *Response, error) {
+
+	req, err := s.client.NewRequest("GET", fmt.Sprintf("sprint/%d", sprintID), nil)
 	if err != nil {
 		return nil, nil, err
 	}
