@@ -632,3 +632,20 @@ func TestIssuesServiceGetEstimation(t *testing.T) {
 	assert.Equal(t, "timeoriginalestimate", issueEst.FieldID)
 	assert.Equal(t, 10800, issueEst.Value)
 }
+
+func TestIssuesServiceEstimation(t *testing.T) {
+	client, mux, _, teardown := setup()
+	defer teardown()
+
+	mux.HandleFunc("/issue/5/estimation", func(w http.ResponseWriter, r *http.Request) {
+		assert.Equal(t, "PUT", r.Method)
+		fmt.Fprint(w, `{"fieldId": "timeoriginalestimate","value": 10800}`)
+	})
+
+	issueEst, _, err := client.Issues.EstimationForBoard(context.Background(), "5", 123, "3h")
+	assert.Nil(t, err)
+
+	assert.NotNil(t, issueEst)
+	assert.Equal(t, "timeoriginalestimate", issueEst.FieldID)
+	assert.Equal(t, 10800, issueEst.Value)
+}

@@ -306,6 +306,11 @@ type GetIssueOptions struct {
 	Expand string `query:"expand"`
 }
 
+// IssueEstimationOptions contains the options to set the issue estimation
+type IssueEstimationOptions struct {
+	Value string `json:"value,omitempty"`
+}
+
 // Get returns a single issue, for a given issue Id or issue key. Issues returned
 // from this resource include Agile fields, like sprint, closedSprints, flagged, and epic.
 //
@@ -337,6 +342,36 @@ func (i *IssuesService) Get(ctx context.Context, idOrKey string, opts *GetIssueO
 // GET /rest/agile/1.0/issue/{issueIdOrKey}/estimation
 func (i *IssuesService) GetEstimationForBoard(ctx context.Context, idOrKey string, boardID int) (*IssueEstimation, *Response, error) {
 	req, err := i.client.NewRequest("GET", fmt.Sprintf("issue/%s/estimation?boardId=%d", idOrKey, boardID), nil)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	var issueEst = &IssueEstimation{}
+	resp, err := i.client.Do(ctx, req, issueEst)
+	if err != nil {
+		return nil, resp, err
+	}
+
+	return issueEst, resp, nil
+}
+
+// EstimationForBoard updates the estimation of the issue. boardId param is required. This param determines
+// which field will be updated on a issue.
+// Note that this resource changes the estimation field of the issue regardless of appearance the field on the screen.
+//
+// Original time tracking estimation field accepts estimation in formats like "1w", "2d", "3h", "20m" or number which
+// represent number of minutes. However, internally the field stores and returns the estimation as a number of seconds.
+//
+// The field used for estimation on the given board can be obtained from board configuration resource. More
+// information about the field are returned by edit meta resource or field resource.
+//
+// PUT /rest/agile/1.0/issue/{issueIdOrKey}/estimation
+func (i *IssuesService) EstimationForBoard(ctx context.Context, idOrKey string, boardID int, estimation string) (*IssueEstimation, *Response, error) {
+	opts := &IssueEstimationOptions{
+		Value: estimation,
+	}
+
+	req, err := i.client.NewRequest("PUT", fmt.Sprintf("issue/%s/estimation?boardId=%d", idOrKey, boardID), opts)
 	if err != nil {
 		return nil, nil, err
 	}
