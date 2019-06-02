@@ -24,9 +24,10 @@ type Client struct {
 	// Reuse a single struct instead of allocating one for each service on the heap.
 	common service
 
-	Boards *BoardsService
-	Epics  *EpicsService
-	Issues *IssuesService
+	Boards  *BoardsService
+	Epics   *EpicsService
+	Issues  *IssuesService
+	Sprints *SprintsService
 }
 
 type service struct {
@@ -59,6 +60,7 @@ func NewClient(baseURL string, httpClient *http.Client) (*Client, error) {
 	c.Boards = (*BoardsService)(&c.common)
 	c.Epics = (*EpicsService)(&c.common)
 	c.Issues = (*IssuesService)(&c.common)
+	c.Sprints = (*SprintsService)(&c.common)
 
 	return c, nil
 }
