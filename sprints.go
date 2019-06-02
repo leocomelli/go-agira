@@ -3,6 +3,7 @@ package jira
 import (
 	"context"
 	"fmt"
+	"net/http"
 	"time"
 )
 
@@ -150,4 +151,27 @@ func (s *SprintsService) PartiallyUpdate(ctx context.Context, sprintID int, spri
 	}
 
 	return sprint, resp, nil
+}
+
+// MoveIssuesTo Moves issues to a sprint, for a given sprint Id. Issues can only be moved to open or
+// active sprints. The maximum number of issues that can be moved in one operation is 50.
+//
+// POST /rest/agile/1.0/sprint/{sprintId}/issue
+func (s *SprintsService) MoveIssuesTo(ctx context.Context, sprintID int, issueKeys *IssueKeys) (bool, *Response, error) {
+
+	req, err := s.client.NewRequest("POST", fmt.Sprintf("sprint/%d/issue", sprintID), issueKeys)
+	if err != nil {
+		return false, nil, err
+	}
+
+	resp, err := s.client.Do(ctx, req, nil)
+	if err != nil {
+		return false, resp, err
+	}
+
+	if resp.StatusCode == http.StatusNoContent {
+		return true, resp, nil
+	}
+
+	return false, resp, nil
 }

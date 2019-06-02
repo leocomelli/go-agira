@@ -48,6 +48,7 @@ func main() {
 		createSprint(client)
 		updateSprint(client)
 		partiallyUpdateSprint(client)
+		moveIssuesTo(client)
 	}
 }
 
@@ -108,4 +109,19 @@ func partiallyUpdateSprint(client *jira.Client) {
 	}
 
 	fmt.Printf("\t%d - %s - %d - %s - %v\n", sprint.ID, sprint.Name, sprint.BoardID, sprint.Goal, sprint.Start)
+}
+
+func moveIssuesTo(client *jira.Client) {
+	fmt.Println("MOVE ISSUES TO...")
+
+	keys := &jira.IssueKeys{
+		Issues: []string{"MCP-985"},
+	}
+
+	ok, _, err := client.Sprints.MoveIssuesTo(context.Background(), 11392, keys)
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	fmt.Printf("\t%v\n", ok)
 }

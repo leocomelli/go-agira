@@ -28,9 +28,9 @@
 
 ## Epic
 
-* [ ] Create epic `POST /rest/api/2/issue`
-* [ ] Update issue specific fields of epic `PUT /rest/api/2/issue/{issueIdOrKey}`
-* [ ] Delete epic `DELETE /rest/api/2/issue`
+* [ ] ~~Create epic~~ `POST /rest/api/2/issue`
+* [ ] ~~Update issue specific fields of epic~~ `PUT /rest/api/2/issue/{issueIdOrKey}`
+* [ ] ~~Delete epic~~ `DELETE /rest/api/2/issue`
 * [x] Get epic `GET /rest/agile/1.0/epic/{epicIdOrKey}`
 * [x] Partially update epic `POST /rest/agile/1.0/epic/{epicIdOrKey}`
 * [x] Get issues for epic `GET /rest/agile/1.0/epic/{epicIdOrKey}/issue`
@@ -53,7 +53,7 @@
 * [x] Update sprint `PUT /rest/agile/1.0/sprint/{sprintId}`
 * [x] Partially update sprint `POST /rest/agile/1.0/sprint/{sprintId}`
 * [ ] Delete sprint `DELETE /rest/agile/1.0/sprint/{sprintId}`
-* [ ] Move issues to sprint `POST /rest/agile/1.0/sprint/{sprintId}/issue`
+* [x] Move issues to sprint `POST /rest/agile/1.0/sprint/{sprintId}/issue`
 * [ ] Get issues for sprint `GET /rest/agile/1.0/sprint/{sprintId}/issue`
 * [ ] Swap sprint `POST /rest/agile/1.0/sprint/{sprintId}/swap`
 
