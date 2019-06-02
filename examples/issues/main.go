@@ -44,6 +44,7 @@ func main() {
 	}
 
 	getIssue(client)
+	getIssueEstimationForBoard(client)
 }
 
 func getIssue(client *jira.Client) {
@@ -54,4 +55,14 @@ func getIssue(client *jira.Client) {
 	}
 
 	fmt.Printf("\t%s - %s\n", issue.ID, issue.Key)
+}
+
+func getIssueEstimationForBoard(client *jira.Client) {
+	fmt.Println("GET ISSUE ESTIMATION...")
+	issueEst, _, err := client.Issues.GetEstimationForBoard(context.Background(), "864189", 2881)
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	fmt.Printf("\t%s - %d\n", issueEst.FieldID, issueEst.Value)
 }

@@ -276,6 +276,12 @@ type IssueVersion struct {
 	Released    bool   `json:"released,omitempty"`
 }
 
+// IssueEstimation represents the estimation of the issue and a fieldId of the field that is used for it
+type IssueEstimation struct {
+	FieldID string `json:"fieldId,omitempty"`
+	Value   int    `json:"value,omitempty"`
+}
+
 // IssuesOptions contains all options to list backlog from a board
 type IssuesOptions struct {
 	//The starting index of the returned sprints. Base index: 0. See the 'Pagination' section at the top of this page for more details.
@@ -320,4 +326,26 @@ func (i *IssuesService) Get(ctx context.Context, idOrKey string, opts *GetIssueO
 	}
 
 	return issue, resp, nil
+}
+
+// GetEstimationForBoard returns the estimation of the issue and a fieldId of the field that is used
+// for it. boardId param is required. This param determines which field will be updated on a issue.
+// Original time internally stores and returns the estimation as a number of seconds.
+// The field used for estimation on the given board can be obtained from board configuration resource.
+// More information about the field are returned by edit meta resource or field resource.
+//
+// GET /rest/agile/1.0/issue/{issueIdOrKey}/estimation
+func (i *IssuesService) GetEstimationForBoard(ctx context.Context, idOrKey string, boardID int) (*IssueEstimation, *Response, error) {
+	req, err := i.client.NewRequest("GET", fmt.Sprintf("issue/%s/estimation?boardId=%d", idOrKey, boardID), nil)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	var issueEst = &IssueEstimation{}
+	resp, err := i.client.Do(ctx, req, issueEst)
+	if err != nil {
+		return nil, resp, err
+	}
+
+	return issueEst, resp, nil
 }

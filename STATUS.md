@@ -42,7 +42,7 @@
 ## Issue
 
 * [x] Get issue `GET /rest/agile/1.0/issue/{issueIdOrKey}`
-* [ ] Get issue estimation for board `GET /rest/agile/1.0/issue/{issueIdOrKey}/estimation`
+* [x] Get issue estimation for board `GET /rest/agile/1.0/issue/{issueIdOrKey}/estimation`
 * [ ] Estimate issue for board `PUT /rest/agile/1.0/issue/{issueIdOrKey}/estimation`
 * [ ] Rank issues `PUT /rest/agile/1.0/issue/rank`
 

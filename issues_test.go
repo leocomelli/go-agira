@@ -615,3 +615,20 @@ func TestIssuesServiceGet(t *testing.T) {
 	assert.NotNil(t, issue)
 	assert.Equal(t, "Project 1", issue.Fields.Project.Name)
 }
+
+func TestIssuesServiceGetEstimation(t *testing.T) {
+	client, mux, _, teardown := setup()
+	defer teardown()
+
+	mux.HandleFunc("/issue/5/estimation", func(w http.ResponseWriter, r *http.Request) {
+		assert.Equal(t, "GET", r.Method)
+		fmt.Fprint(w, `{"fieldId": "timeoriginalestimate","value": 10800}`)
+	})
+
+	issueEst, _, err := client.Issues.GetEstimationForBoard(context.Background(), "5", 123)
+	assert.Nil(t, err)
+
+	assert.NotNil(t, issueEst)
+	assert.Equal(t, "timeoriginalestimate", issueEst.FieldID)
+	assert.Equal(t, 10800, issueEst.Value)
+}
