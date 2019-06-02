@@ -87,3 +87,25 @@ func TestSprintsServiceUpdate(t *testing.T) {
 	assert.Equal(t, 2881, sprint.BoardID)
 	assert.Equal(t, "I do not know", sprint.Goal)
 }
+
+func TestSprintsServicePartiallyUpdate(t *testing.T) {
+	client, mux, _, teardown := setup()
+	defer teardown()
+
+	mux.HandleFunc("/sprint/11392", func(w http.ResponseWriter, r *http.Request) {
+		assert.Equal(t, "POST", r.Method)
+		fmt.Fprint(w, `{"id": 5259,"self": "https://jira.mycompany.com/rest/agile/1.0/sprint/5259","state": "open","name": "Sprint 001 ---","originBoardId": 2881,"goal": "I do not know"}`)
+	})
+
+	newSprint := &Sprint{
+		Name: "Sprint 001 ---",
+	}
+
+	sprint, _, err := client.Sprints.PartiallyUpdate(context.Background(), 11392, newSprint)
+	assert.Nil(t, err)
+
+	assert.NotNil(t, sprint)
+	assert.Equal(t, "Sprint 001 ---", sprint.Name)
+	assert.Equal(t, 2881, sprint.BoardID)
+	assert.Equal(t, "I do not know", sprint.Goal)
+}

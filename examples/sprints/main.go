@@ -44,10 +44,11 @@ func main() {
 	}
 
 	getSprint(client)
-	//if write {
-	//	createSprint(client)
-	updateSprint(client)
-	//}
+	if write {
+		createSprint(client)
+		updateSprint(client)
+		partiallyUpdateSprint(client)
+	}
 }
 
 func createSprint(client *jira.Client) {
@@ -87,6 +88,21 @@ func updateSprint(client *jira.Client) {
 	}
 
 	sprint, _, err := client.Sprints.Update(context.Background(), 11392, uSprint)
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	fmt.Printf("\t%d - %s - %d - %s - %v\n", sprint.ID, sprint.Name, sprint.BoardID, sprint.Goal, sprint.Start)
+}
+
+func partiallyUpdateSprint(client *jira.Client) {
+	fmt.Println("PARTIALLY UPDATE SPRINT...")
+
+	uSprint := &jira.Sprint{
+		Name: "My First Sprint Up1 ***",
+	}
+
+	sprint, _, err := client.Sprints.PartiallyUpdate(context.Background(), 11392, uSprint)
 	if err != nil {
 		log.Fatal(err)
 	}

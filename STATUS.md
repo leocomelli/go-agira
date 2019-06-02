@@ -51,7 +51,7 @@
 * [x] Create sprint `POST /rest/agile/1.0/sprint`
 * [x] Get sprint `GET /rest/agile/1.0/sprint/{sprintId}`
 * [x] Update sprint `PUT /rest/agile/1.0/sprint/{sprintId}`
-* [ ] Partially update sprint `POST /rest/agile/1.0/sprint/{sprintId}`
+* [x] Partially update sprint `POST /rest/agile/1.0/sprint/{sprintId}`
 * [ ] Delete sprint `DELETE /rest/agile/1.0/sprint/{sprintId}`
 * [ ] Move issues to sprint `POST /rest/agile/1.0/sprint/{sprintId}/issue`
 * [ ] Get issues for sprint `GET /rest/agile/1.0/sprint/{sprintId}/issue`

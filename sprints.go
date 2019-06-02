@@ -105,9 +105,40 @@ func (s *SprintsService) Get(ctx context.Context, sprintID int) (*Sprint, *Respo
 // request.
 // - Other changes to state are not allowed.
 // - The completeDate field cannot be updated manually.
+//
+// PUT /rest/agile/1.0/sprint/{sprintId}
 func (s *SprintsService) Update(ctx context.Context, sprintID int, sprintInfo *Sprint) (*Sprint, *Response, error) {
 
 	req, err := s.client.NewRequest("PUT", fmt.Sprintf("sprint/%d", sprintID), sprintInfo)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	var sprint = &Sprint{}
+	resp, err := s.client.Do(ctx, req, sprint)
+	if err != nil {
+		return nil, resp, err
+	}
+
+	return sprint, resp, nil
+}
+
+// PartiallyUpdate performs a partial update of a sprint. A partial update means that fields not
+// present in the request JSON will not be updated.
+//
+// Notes:
+// - Sprints that are in a closed state cannot be updated.
+// - A sprint can be started by updating the state to 'active'. This requires the sprint to be in the
+// 'future' state and have a startDate and endDate set.
+// - A sprint can be completed by updating the state to 'closed'. This action requires the sprint to
+// be in the 'active' state. This sets the completeDate to the time of the request.
+// - Other changes to state are not allowed.
+// - The completeDate field cannot be updated manually.
+//
+// POST /rest/agile/1.0/sprint/{sprintId}
+func (s *SprintsService) PartiallyUpdate(ctx context.Context, sprintID int, sprintInfo *Sprint) (*Sprint, *Response, error) {
+
+	req, err := s.client.NewRequest("POST", fmt.Sprintf("sprint/%d", sprintID), sprintInfo)
 	if err != nil {
 		return nil, nil, err
 	}
