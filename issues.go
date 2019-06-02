@@ -282,6 +282,12 @@ type IssueEstimation struct {
 	Value   int    `json:"value,omitempty"`
 }
 
+// IssueKeys contains the issue key to perform the actions
+// For example: EpicsServices.MoveIssuesTo(...), SprintsService.MoveIssuesTo(...)
+type IssueKeys struct {
+	Issues []string `json:"issues,omitempty"`
+}
+
 // IssuesOptions contains all options to list backlog from a board
 type IssuesOptions struct {
 	//The starting index of the returned sprints. Base index: 0. See the 'Pagination' section at the top of this page for more details.

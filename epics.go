@@ -40,12 +40,6 @@ type EpicsOptions struct {
 	Done bool `query:"done"`
 }
 
-// IssueKeys constains the issue key to perform the actions
-// For example: MoveIssuesTo(...)
-type IssueKeys struct {
-	Issues []string `json:"issues,omitempty"`
-}
-
 // Get returns the epic for a given epic Id.
 // This epic will only be returned if the user has permission to view it.
 //
