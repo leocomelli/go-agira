@@ -95,3 +95,17 @@ func TestEpicsServiceMoveIssuesTo(t *testing.T) {
 	assert.Nil(t, err)
 	assert.True(t, ok)
 }
+
+func TestEpicsServiceListIssuesWithoutEpic(t *testing.T) {
+	client, mux, _, teardown := setup()
+	defer teardown()
+
+	mux.HandleFunc("/epic/none/issue", func(w http.ResponseWriter, r *http.Request) {
+		assert.Equal(t, "GET", r.Method)
+		_, _ = fmt.Fprint(w, issueAsJSON)
+	})
+
+	backlog, _, err := client.Epics.ListIssuesWithoutEpic(context.Background(), nil)
+	assert.Nil(t, err)
+	assert.Len(t, backlog, 1)
+}

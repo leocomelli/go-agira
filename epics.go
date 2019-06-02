@@ -135,3 +135,30 @@ func (b *EpicsService) MoveIssuesTo(ctx context.Context, idOrKey string, issueKe
 
 	return false, nil
 }
+
+// ListIssuesWithoutEpic returns all issues that do not belong to any epic. This only includes issues
+// that the user has permission to view. Issues returned from this resource include Agile fields,
+// like sprint, closedSprints, flagged, and epic. By default, the returned issues are ordered by rank.
+//
+// GET /rest/agile/1.0/epic/none/issue
+func (b *EpicsService) ListIssuesWithoutEpic(ctx context.Context, opts *IssuesOptions) ([]*Issue, *Response, error) {
+
+	q := QueryParameters(opts)
+
+	req, err := b.client.NewRequest("GET", "epic/none/issue"+q, nil)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	var wrap = &IssueWrap{}
+	resp, err := b.client.Do(ctx, req, wrap)
+	if err != nil {
+		return nil, resp, err
+	}
+
+	resp.MaxResults = wrap.MaxResults
+	resp.StartAt = wrap.StartAt
+	resp.IsLast = wrap.IsLast
+
+	return wrap.Values, resp, nil
+}

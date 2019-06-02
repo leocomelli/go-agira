@@ -45,6 +45,7 @@ func main() {
 
 	getEpic(client)
 	listIssues(client)
+	listIssuesWithoutEpic(client)
 	if write {
 		partiallyUpdate(client)
 		moveIssuesTo(client)
@@ -103,4 +104,18 @@ func moveIssuesTo(client *jira.Client) {
 	}
 
 	fmt.Printf("\t%v", ok)
+}
+
+func listIssuesWithoutEpic(client *jira.Client) {
+	fmt.Println("ISSUES WITHOUT EPIC...")
+
+	issues, _, err := client.Epics.ListIssuesWithoutEpic(context.Background(), &jira.IssuesOptions{})
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	for _, i := range issues {
+		fmt.Printf("\tid: %s, key: %s, reporter: %s, status: %s\n",
+			i.ID, i.Key, i.Fields.Reporter.DisplayName, i.Fields.Status.Name)
+	}
 }
