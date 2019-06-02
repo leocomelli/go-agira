@@ -49,6 +49,7 @@ func main() {
 	if write {
 		partiallyUpdate(client)
 		moveIssuesTo(client)
+		removeIssuesFrom(client)
 	}
 }
 
@@ -103,7 +104,22 @@ func moveIssuesTo(client *jira.Client) {
 		log.Fatal(err)
 	}
 
-	fmt.Printf("\t%v", ok)
+	fmt.Printf("\t%v\n", ok)
+}
+
+func removeIssuesFrom(client *jira.Client) {
+	fmt.Println("REMOVE ISSUES FROM...")
+
+	keys := &jira.IssueKeys{
+		Issues: []string{"MCP-695"},
+	}
+
+	ok, err := client.Epics.RemoveIssuesFrom(context.Background(), keys)
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	fmt.Printf("\t%v\n", ok)
 }
 
 func listIssuesWithoutEpic(client *jira.Client) {

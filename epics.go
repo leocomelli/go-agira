@@ -164,3 +164,12 @@ func (b *EpicsService) ListIssuesWithoutEpic(ctx context.Context, opts *IssuesOp
 
 	return wrap.Values, resp, nil
 }
+
+// RemoveIssuesFrom removes issues from epics. The user needs to have the edit issue permission for
+// all issue they want to remove from epics. The maximum number of issues that can be moved in one
+// operation is 50.
+//
+// POST /rest/agile/1.0/epic/none/issue
+func (b *EpicsService) RemoveIssuesFrom(ctx context.Context, issueKeys *IssueKeys) (bool, error) {
+	return b.MoveIssuesTo(ctx, "none", issueKeys)
+}
