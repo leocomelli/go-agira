@@ -91,7 +91,7 @@ func TestEpicsServiceMoveIssuesTo(t *testing.T) {
 		Issues: []string{"MCP-1", "MCP-2"},
 	}
 
-	ok, err := client.Epics.MoveIssuesTo(context.Background(), "5", issues)
+	ok, _, err := client.Epics.MoveIssuesTo(context.Background(), "5", issues)
 	assert.Nil(t, err)
 	assert.True(t, ok)
 }
@@ -109,7 +109,7 @@ func TestEpicsServiceRemoveIssuesFrom(t *testing.T) {
 		Issues: []string{"MCP-1", "MCP-2"},
 	}
 
-	ok, err := client.Epics.RemoveIssuesFrom(context.Background(), issues)
+	ok, _, err := client.Epics.RemoveIssuesFrom(context.Background(), issues)
 	assert.Nil(t, err)
 	assert.True(t, ok)
 }

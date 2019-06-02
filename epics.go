@@ -114,22 +114,22 @@ func (b *EpicsService) PartiallyUpdate(ctx context.Context, idOrKey string, epic
 // operation is 50.
 //
 // POST /rest/agile/1.0/epic/{epicIdOrKey}/issue
-func (b *EpicsService) MoveIssuesTo(ctx context.Context, idOrKey string, issueKeys *IssueKeys) (bool, error) {
+func (b *EpicsService) MoveIssuesTo(ctx context.Context, idOrKey string, issueKeys *IssueKeys) (bool, *Response, error) {
 	req, err := b.client.NewRequest("POST", fmt.Sprintf("epic/%s/issue", idOrKey), issueKeys)
 	if err != nil {
-		return false, err
+		return false, nil, err
 	}
 
 	resp, err := b.client.Do(ctx, req, nil)
 	if err != nil {
-		return false, err
+		return false, resp, err
 	}
 
 	if resp.StatusCode == http.StatusNoContent {
-		return true, nil
+		return true, resp, nil
 	}
 
-	return false, nil
+	return false, resp, nil
 }
 
 // ListIssuesWithoutEpic returns all issues that do not belong to any epic. This only includes issues
@@ -164,6 +164,6 @@ func (b *EpicsService) ListIssuesWithoutEpic(ctx context.Context, opts *IssuesOp
 // operation is 50.
 //
 // POST /rest/agile/1.0/epic/none/issue
-func (b *EpicsService) RemoveIssuesFrom(ctx context.Context, issueKeys *IssueKeys) (bool, error) {
+func (b *EpicsService) RemoveIssuesFrom(ctx context.Context, issueKeys *IssueKeys) (bool, *Response, error) {
 	return b.MoveIssuesTo(ctx, "none", issueKeys)
 }
