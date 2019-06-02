@@ -44,7 +44,7 @@
 * [x] Get issue `GET /rest/agile/1.0/issue/{issueIdOrKey}`
 * [x] Get issue estimation for board `GET /rest/agile/1.0/issue/{issueIdOrKey}/estimation`
 * [x] Estimate issue for board `PUT /rest/agile/1.0/issue/{issueIdOrKey}/estimation`
-* [ ] Rank issues `PUT /rest/agile/1.0/issue/rank`
+* [x] Rank issues `PUT /rest/agile/1.0/issue/rank`
 
 ## Sprint 
 

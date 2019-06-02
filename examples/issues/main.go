@@ -47,6 +47,7 @@ func main() {
 	getIssueEstimationForBoard(client)
 	if write {
 		issueEstimationForBoard(client)
+		rank(client)
 	}
 }
 
@@ -78,4 +79,20 @@ func issueEstimationForBoard(client *jira.Client) {
 	}
 
 	fmt.Printf("\t%s - %d\n", issueEst.FieldID, issueEst.Value)
+}
+
+func rank(client *jira.Client) {
+	fmt.Println("RANK...")
+
+	rank := &jira.IssueRank{
+		Issues:    []string{"MCP-985"},
+		RankAfter: "MCP-961",
+	}
+
+	e, _, err := client.Issues.Rank(context.Background(), rank)
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	fmt.Println(e)
 }

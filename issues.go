@@ -288,6 +288,27 @@ type IssueKeys struct {
 	Issues []string `json:"issues,omitempty"`
 }
 
+// IssueRank contains the fields for ranking issues
+type IssueRank struct {
+	Issues            []string `json:"issues,omitempty"`
+	RankAfter         string   `json:"rankAfterIssue,omitempty"`
+	RankBefore        string   `json:"rankBeforeIssue,omitempty"`
+	RankCustomFieldID string   `json:"rankCustomFieldId,omitempty"`
+}
+
+// IssueRankStatus contains the status of ranking issues
+type IssueRankStatus struct {
+	ID     int      `json:"issueId,omitempty"`
+	Key    string   `json:"issueKey,omitempty"`
+	Status int      `json:"status,omitempty"`
+	Errors []string `json:"errors,omitempty"`
+}
+
+// IssueRankEntry contains the entries of ranking issues
+type IssueRankEntry struct {
+	Entries []IssueRankStatus `json:"entries,omitempty"`
+}
+
 // IssuesOptions contains all options to list backlog from a board
 type IssuesOptions struct {
 	//The starting index of the returned sprints. Base index: 0. See the 'Pagination' section at the top of this page for more details.
@@ -389,4 +410,27 @@ func (i *IssuesService) EstimationForBoard(ctx context.Context, idOrKey string, 
 	}
 
 	return issueEst, resp, nil
+}
+
+// Rank moves (ranks) issues before or after a given issue. At most 50 issues may be ranked at once.
+// This operation may fail for some issues, although this will be rare. In that case the 207 status
+// code is returned for the whole response and detailed information regarding each issue is available
+// in the response body.
+// If rankCustomFieldId is not defined, the default rank field will be used.
+//
+// PUT /rest/agile/1.0/issue/rank
+func (i *IssuesService) Rank(ctx context.Context, rank *IssueRank) (*IssueRankEntry, *Response, error) {
+
+	req, err := i.client.NewRequest("PUT", "issue/rank", rank)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	var entries = &IssueRankEntry{}
+	resp, err := i.client.Do(ctx, req, entries)
+	if err != nil {
+		return nil, resp, err
+	}
+
+	return entries, resp, nil
 }

@@ -649,3 +649,64 @@ func TestIssuesServiceEstimation(t *testing.T) {
 	assert.Equal(t, "timeoriginalestimate", issueEst.FieldID)
 	assert.Equal(t, 10800, issueEst.Value)
 }
+
+func TestIssuesServiceRanking(t *testing.T) {
+	client, mux, _, teardown := setup()
+	defer teardown()
+
+	mux.HandleFunc("/issue/rank", func(w http.ResponseWriter, r *http.Request) {
+		assert.Equal(t, "PUT", r.Method)
+	})
+
+	rank := &IssueRank{
+		Issues:     []string{"MCP-10", "MCP-20"},
+		RankBefore: "MCP-4",
+	}
+
+	entries, _, err := client.Issues.Rank(context.Background(), rank)
+	assert.Nil(t, err)
+	assert.Len(t, entries.Entries, 0)
+
+}
+
+func TestIssuesServiceRankingWithError(t *testing.T) {
+	client, mux, _, teardown := setup()
+	defer teardown()
+
+	mux.HandleFunc("/issue/rank", func(w http.ResponseWriter, r *http.Request) {
+		assert.Equal(t, "PUT", r.Method)
+		fmt.Fprint(w, `{
+    "entries": [
+        {
+            "issueId": 10000,
+            "issueKey": "PR-1",
+            "status": 200
+        },
+        {
+            "issueId": 10001,
+            "issueKey": "PR-2",
+            "status": 200
+        },
+        {
+            "issueId": 10002,
+            "issueKey": "PR-3",
+            "status": 503,
+            "errors": [
+                "JIRA Agile cannot execute the rank operation at this time. Please try again later."
+            ]
+        }
+    ]
+}`)
+
+	})
+
+	rank := &IssueRank{
+		Issues:     []string{"PR-1", "PR2", "PR3"},
+		RankBefore: "PR-4",
+	}
+
+	entries, _, err := client.Issues.Rank(context.Background(), rank)
+	assert.Nil(t, err)
+	assert.Len(t, entries.Entries, 3)
+
+}
