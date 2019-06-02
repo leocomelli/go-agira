@@ -159,3 +159,17 @@ func TestSprintsServiceSwap(t *testing.T) {
 	assert.Nil(t, err)
 	assert.True(t, ok)
 }
+
+func TestSprintsServiceDelete(t *testing.T) {
+	client, mux, _, teardown := setup()
+	defer teardown()
+
+	mux.HandleFunc("/sprint/9999", func(w http.ResponseWriter, r *http.Request) {
+		assert.Equal(t, "DELETE", r.Method)
+		w.WriteHeader(http.StatusNoContent)
+	})
+
+	ok, _, err := client.Sprints.Delete(context.Background(), 9999)
+	assert.Nil(t, err)
+	assert.True(t, ok)
+}

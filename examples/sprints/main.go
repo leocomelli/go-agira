@@ -51,6 +51,7 @@ func main() {
 		partiallyUpdateSprint(client)
 		moveIssuesTo(client)
 		swap(client)
+		deleteSprint(client)
 	}
 }
 
@@ -151,4 +152,17 @@ func swap(client *jira.Client) {
 	}
 
 	fmt.Printf("\t%v\n", ok)
+}
+
+func deleteSprint(client *jira.Client) {
+	fmt.Println("DELETE...")
+
+	ok, resp, err := client.Sprints.Delete(context.Background(), 11392)
+	if err != nil {
+		log.Println(err)
+	}
+
+	fmt.Println(ok)
+	fmt.Println(resp.StatusCode)
+
 }

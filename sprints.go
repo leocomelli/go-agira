@@ -227,3 +227,26 @@ func (s *SprintsService) Swap(ctx context.Context, sprintID int, swap *SwapSprin
 
 	return false, resp, nil
 }
+
+// Delete a sprint. Once a sprint is deleted, all issues in the sprint will be moved to
+// the backlog. Note, only future sprints can be deleted.
+//
+// DELETE /rest/agile/1.0/sprint/{sprintId}
+func (s *SprintsService) Delete(ctx context.Context, sprintID int) (bool, *Response, error) {
+
+	req, err := s.client.NewRequest("DELETE", fmt.Sprintf("sprint/%d", sprintID), nil)
+	if err != nil {
+		return false, nil, err
+	}
+
+	resp, err := s.client.Do(ctx, req, nil)
+	if err != nil {
+		return false, resp, err
+	}
+
+	if resp.StatusCode == http.StatusNoContent {
+		return true, resp, nil
+	}
+
+	return false, resp, nil
+}

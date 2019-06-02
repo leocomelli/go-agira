@@ -52,7 +52,7 @@
 * [x] Get sprint `GET /rest/agile/1.0/sprint/{sprintId}`
 * [x] Update sprint `PUT /rest/agile/1.0/sprint/{sprintId}`
 * [x] Partially update sprint `POST /rest/agile/1.0/sprint/{sprintId}`
-* [ ] Delete sprint `DELETE /rest/agile/1.0/sprint/{sprintId}`
+* [x] Delete sprint `DELETE /rest/agile/1.0/sprint/{sprintId}`
 * [x] Move issues to sprint `POST /rest/agile/1.0/sprint/{sprintId}/issue`
 * [x] Get issues for sprint `GET /rest/agile/1.0/sprint/{sprintId}/issue`
 * [x] Swap sprint `POST /rest/agile/1.0/sprint/{sprintId}/swap`
