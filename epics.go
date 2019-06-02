@@ -84,3 +84,22 @@ func (b *EpicsService) ListIssues(ctx context.Context, idOrKey string, opts *Iss
 
 	return wrap.Values, resp, nil
 }
+
+// PartiallyUpdate performs a partial update of the epic. A partial update means that fields not present
+// in the request JSON will not be updated. Valid values for color are color_1 to color_9.
+//
+// POST /rest/agile/1.0/epic/{epicIdOrKey}
+func (b *EpicsService) PartiallyUpdate(ctx context.Context, idOrKey string, epic *Epic) (*Epic, *Response, error) {
+	req, err := b.client.NewRequest("POST", fmt.Sprintf("epic/%s", idOrKey), epic)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	var updatedEpic = &Epic{}
+	resp, err := b.client.Do(ctx, req, updatedEpic)
+	if err != nil {
+		return nil, resp, err
+	}
+
+	return updatedEpic, resp, nil
+}

@@ -1,6 +1,7 @@
 package main
 
 import (
+	"bytes"
 	"context"
 	"fmt"
 	"log"
@@ -45,6 +46,9 @@ func main() {
 
 	getEpic(client)
 	listIssues(client)
+	if write {
+		partiallyUpdate(client)
+	}
 }
 
 func getEpic(client *jira.Client) {
@@ -54,7 +58,7 @@ func getEpic(client *jira.Client) {
 		log.Fatal(err)
 	}
 
-	fmt.Printf("\t%d - %s - %s\n", epic.ID, epic.Name, epic.Key)
+	fmt.Printf("\t%d - %s - %s - %s\n", epic.ID, epic.Name, epic.Key, epic.Color)
 }
 
 func listIssues(client *jira.Client) {
@@ -69,4 +73,24 @@ func listIssues(client *jira.Client) {
 		fmt.Printf("\tid: %s, key: %s, reporter: %s, status: %s\n",
 			i.ID, i.Key, i.Fields.Reporter.DisplayName, i.Fields.Status.Name)
 	}
+}
+
+func partiallyUpdate(client *jira.Client) {
+	fmt.Println("PARTIALLY UPDATE...")
+
+	epic := &jira.Epic{
+		Name: "C.C.",
+	}
+
+	updatedEpic, resp, err := client.Epics.PartiallyUpdate(context.Background(), "523967", epic)
+	if err != nil {
+		buf := new(bytes.Buffer)
+		buf.ReadFrom(resp.Body)
+		newStr := buf.String()
+		log.Println(resp.StatusCode)
+		log.Println(newStr)
+		log.Fatal(err)
+	}
+
+	fmt.Printf("epic: %d - %s - %s - %s\n", updatedEpic.ID, updatedEpic.Name, updatedEpic.Key, updatedEpic.Color)
 }
