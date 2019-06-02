@@ -44,6 +44,7 @@ func main() {
 	}
 
 	getSprint(client)
+	listIssues(client)
 	if write {
 		createSprint(client)
 		updateSprint(client)
@@ -124,4 +125,18 @@ func moveIssuesTo(client *jira.Client) {
 	}
 
 	fmt.Printf("\t%v\n", ok)
+}
+
+func listIssues(client *jira.Client) {
+	fmt.Println("ISSUES...")
+
+	issues, _, err := client.Sprints.ListIssues(context.Background(), 11392, &jira.IssuesOptions{})
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	for _, i := range issues {
+		fmt.Printf("\tid: %s, key: %s, reporter: %s\n",
+			i.ID, i.Key, i.Fields.Reporter.DisplayName)
+	}
 }

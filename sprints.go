@@ -175,3 +175,28 @@ func (s *SprintsService) MoveIssuesTo(ctx context.Context, sprintID int, issueKe
 
 	return false, resp, nil
 }
+
+// ListIssues returns all issues in a sprint, for a given sprint Id. This only includes issues that the
+// user has permission to view. By default, the returned issues are ordered by rank.
+//
+// GET /rest/agile/1.0/sprint/{sprintId}/issue
+func (s *SprintsService) ListIssues(ctx context.Context, sprintID int, opts *IssuesOptions) ([]*Issue, *Response, error) {
+	q := QueryParameters(opts)
+
+	req, err := s.client.NewRequest("GET", fmt.Sprintf("sprint/%d/issue%s", sprintID, q), nil)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	var wrap = &IssueWrap{}
+	resp, err := s.client.Do(ctx, req, wrap)
+	if err != nil {
+		return nil, resp, err
+	}
+
+	resp.MaxResults = wrap.MaxResults
+	resp.StartAt = wrap.StartAt
+	resp.IsLast = wrap.IsLast
+
+	return wrap.Values, resp, nil
+}

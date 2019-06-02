@@ -127,3 +127,17 @@ func TestSprintsServiceMoveIssuesTo(t *testing.T) {
 	assert.Nil(t, err)
 	assert.True(t, ok)
 }
+
+func TestSprintsServiceListIssuesForSprint(t *testing.T) {
+	client, mux, _, teardown := setup()
+	defer teardown()
+
+	mux.HandleFunc("/sprint/111/issue", func(w http.ResponseWriter, r *http.Request) {
+		assert.Equal(t, "GET", r.Method)
+		_, _ = fmt.Fprint(w, issuesAsJSON)
+	})
+
+	backlog, _, err := client.Sprints.ListIssues(context.Background(), 111, nil)
+	assert.Nil(t, err)
+	assert.Len(t, backlog, 1)
+}
