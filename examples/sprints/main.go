@@ -50,6 +50,7 @@ func main() {
 		updateSprint(client)
 		partiallyUpdateSprint(client)
 		moveIssuesTo(client)
+		swap(client)
 	}
 }
 
@@ -139,4 +140,15 @@ func listIssues(client *jira.Client) {
 		fmt.Printf("\tid: %s, key: %s, reporter: %s\n",
 			i.ID, i.Key, i.Fields.Reporter.DisplayName)
 	}
+}
+
+func swap(client *jira.Client) {
+	fmt.Println("SWAP...")
+
+	ok, _, err := client.Sprints.Swap(context.Background(), 11392, &jira.SwapSprint{ID: 11332})
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	fmt.Printf("\t%v\n", ok)
 }

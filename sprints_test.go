@@ -141,3 +141,21 @@ func TestSprintsServiceListIssuesForSprint(t *testing.T) {
 	assert.Nil(t, err)
 	assert.Len(t, backlog, 1)
 }
+
+func TestSprintsServiceSwap(t *testing.T) {
+	client, mux, _, teardown := setup()
+	defer teardown()
+
+	mux.HandleFunc("/sprint/5/swap", func(w http.ResponseWriter, r *http.Request) {
+		assert.Equal(t, "POST", r.Method)
+		w.WriteHeader(http.StatusNoContent)
+	})
+
+	swap := &SwapSprint{
+		ID: 111,
+	}
+
+	ok, _, err := client.Sprints.Swap(context.Background(), 5, swap)
+	assert.Nil(t, err)
+	assert.True(t, ok)
+}

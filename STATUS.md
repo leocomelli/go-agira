@@ -55,7 +55,7 @@
 * [ ] Delete sprint `DELETE /rest/agile/1.0/sprint/{sprintId}`
 * [x] Move issues to sprint `POST /rest/agile/1.0/sprint/{sprintId}/issue`
 * [x] Get issues for sprint `GET /rest/agile/1.0/sprint/{sprintId}/issue`
-* [ ] Swap sprint `POST /rest/agile/1.0/sprint/{sprintId}/swap`
+* [x] Swap sprint `POST /rest/agile/1.0/sprint/{sprintId}/swap`
 * [ ] Get properties keys `GET /rest/agile/1.0/sprint/{sprintId}/properties`
 * [ ] Delete property `DELETE /rest/agile/1.0/sprint/{sprintId}/properties/{propertyKey}`
 * [ ] Set property `PUT /rest/agile/1.0/sprint/{sprintId}/properties/{propertyKey}`

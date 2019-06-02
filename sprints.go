@@ -43,6 +43,11 @@ type NewSprint struct {
 	End   *time.Time `json:"endDate,omitempty"`
 }
 
+// SwapSprint contains the options to swap a sprint
+type SwapSprint struct {
+	ID int `json:"sprintToSwapWith, omitempty"`
+}
+
 // SprintsOptions contains all options to list all sprints from a board
 type SprintsOptions struct {
 	//The starting index of the returned sprints. Base index: 0. See the 'Pagination' section at the top of this page for more details.
@@ -199,4 +204,26 @@ func (s *SprintsService) ListIssues(ctx context.Context, sprintID int, opts *Iss
 	resp.IsLast = wrap.IsLast
 
 	return wrap.Values, resp, nil
+}
+
+// Swap the position of the sprint with the second sprint.
+//
+// POST /rest/agile/1.0/sprint/{sprintId}/swap
+func (s *SprintsService) Swap(ctx context.Context, sprintID int, swap *SwapSprint) (bool, *Response, error) {
+
+	req, err := s.client.NewRequest("POST", fmt.Sprintf("sprint/%d/swap", sprintID), swap)
+	if err != nil {
+		return false, nil, err
+	}
+
+	resp, err := s.client.Do(ctx, req, nil)
+	if err != nil {
+		return false, resp, err
+	}
+
+	if resp.StatusCode == http.StatusNoContent {
+		return true, resp, nil
+	}
+
+	return false, resp, nil
 }
