@@ -74,7 +74,9 @@ func (b *EpicsService) Get(ctx context.Context, idOrKey string) (*Epic, *Respons
 // GET /rest/agile/1.0/epic/{epicIdOrKey}/issue
 func (b *EpicsService) ListIssues(ctx context.Context, idOrKey string, opts *IssuesOptions) ([]*Issue, *Response, error) {
 
-	req, err := b.client.NewRequest("GET", fmt.Sprintf("epic/%s/issue", idOrKey), nil)
+	q := QueryParameters(opts)
+
+	req, err := b.client.NewRequest("GET", fmt.Sprintf("epic/%s/issue%s", idOrKey, q), nil)
 	if err != nil {
 		return nil, nil, err
 	}
