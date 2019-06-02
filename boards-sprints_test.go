@@ -50,7 +50,7 @@ func TestBoardsServiceListIssuesForSprint(t *testing.T) {
 
 	mux.HandleFunc("/board/5259/sprint/111/issue", func(w http.ResponseWriter, r *http.Request) {
 		assert.Equal(t, "GET", r.Method)
-		_, _ = fmt.Fprint(w, issueAsJSON)
+		_, _ = fmt.Fprint(w, issuesAsJSON)
 	})
 
 	backlog, _, err := client.Boards.ListIssuesForSprint(context.Background(), 5259, 111, nil)

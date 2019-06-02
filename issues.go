@@ -1,10 +1,18 @@
 package jira
 
 import (
+	"context"
 	"encoding/json"
+	"fmt"
 	"strings"
 	"time"
 )
+
+// IssuesService handles communication with the issues related
+// methods of the Jira Agile API
+//
+// Jira Agile API docs: https://docs.atlassian.com/jira-software/REST/7.3.1/#agile/1.0/issue
+type IssuesService service
 
 // DateTime represents a time in 2006-01-02T15:04:05.000-0700 format
 type DateTime time.Time
@@ -282,4 +290,34 @@ type IssuesOptions struct {
 	Fields string `query:"fields"`
 	//This parameter is currently not used.
 	Expand string `query:"expand"`
+}
+
+// GetIssueOptions contains the options to get an issue
+type GetIssueOptions struct {
+	//The list of fields to return for each issue. By default, all navigable and Agile fields are returned.
+	Fields string `query:"fields"`
+	//This parameter is currently not used.
+	Expand string `query:"expand"`
+}
+
+// Get returns a single issue, for a given issue Id or issue key. Issues returned
+// from this resource include Agile fields, like sprint, closedSprints, flagged, and epic.
+//
+// GET /rest/agile/1.0/issue/{issueIdOrKey}
+func (i *IssuesService) Get(ctx context.Context, idOrKey string, opts *GetIssueOptions) (*Issue, *Response, error) {
+
+	q := QueryParameters(opts)
+
+	req, err := i.client.NewRequest("GET", fmt.Sprintf("issue/%s%s", idOrKey, q), nil)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	var issue = &Issue{}
+	resp, err := i.client.Do(ctx, req, issue)
+	if err != nil {
+		return nil, resp, err
+	}
+
+	return issue, resp, nil
 }

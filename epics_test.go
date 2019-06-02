@@ -43,7 +43,7 @@ func TestEpicsServiceListIssues(t *testing.T) {
 
 	mux.HandleFunc("/epic/5259/issue", func(w http.ResponseWriter, r *http.Request) {
 		assert.Equal(t, "GET", r.Method)
-		_, _ = fmt.Fprint(w, issueAsJSON)
+		_, _ = fmt.Fprint(w, issuesAsJSON)
 	})
 
 	backlog, _, err := client.Epics.ListIssues(context.Background(), "5259", nil)
@@ -120,7 +120,7 @@ func TestEpicsServiceListIssuesWithoutEpic(t *testing.T) {
 
 	mux.HandleFunc("/epic/none/issue", func(w http.ResponseWriter, r *http.Request) {
 		assert.Equal(t, "GET", r.Method)
-		_, _ = fmt.Fprint(w, issueAsJSON)
+		_, _ = fmt.Fprint(w, issuesAsJSON)
 	})
 
 	backlog, _, err := client.Epics.ListIssuesWithoutEpic(context.Background(), nil)

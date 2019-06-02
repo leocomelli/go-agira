@@ -93,7 +93,7 @@ func TestBoardsServiceListBacklogIssues(t *testing.T) {
 
 	mux.HandleFunc("/board/5259/backlog", func(w http.ResponseWriter, r *http.Request) {
 		assert.Equal(t, "GET", r.Method)
-		_, _ = fmt.Fprint(w, issueAsJSON)
+		_, _ = fmt.Fprint(w, issuesAsJSON)
 	})
 
 	backlog, resp, err := client.Boards.ListBacklogIssues(context.Background(), 5259, nil)
@@ -118,7 +118,7 @@ func TestBoardsServiceListIssues(t *testing.T) {
 
 	mux.HandleFunc("/board/5259/issue", func(w http.ResponseWriter, r *http.Request) {
 		assert.Equal(t, "GET", r.Method)
-		_, _ = fmt.Fprint(w, issueAsJSON)
+		_, _ = fmt.Fprint(w, issuesAsJSON)
 	})
 
 	backlog, _, err := client.Boards.ListIssues(context.Background(), 5259, nil)
