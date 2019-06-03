@@ -51,15 +51,15 @@ type EpicsOptions struct {
 // This epic will only be returned if the user has permission to view it.
 //
 // GET /rest/agile/1.0/epic/{epicIdOrKey}
-func (b *EpicsService) Get(ctx context.Context, idOrKey string) (*Epic, *Response, error) {
+func (e *EpicsService) Get(ctx context.Context, idOrKey string) (*Epic, *Response, error) {
 
-	req, err := b.client.NewRequest("GET", fmt.Sprintf("epic/%s", idOrKey), nil)
+	req, err := e.client.NewRequest("GET", fmt.Sprintf("epic/%s", idOrKey), nil)
 	if err != nil {
 		return nil, nil, err
 	}
 
 	var epic = &Epic{}
-	resp, err := b.client.Do(ctx, req, epic)
+	resp, err := e.client.Do(ctx, req, epic)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -73,17 +73,17 @@ func (b *EpicsService) Get(ctx context.Context, idOrKey string) (*Epic, *Respons
 // ordered by rank.
 //
 // GET /rest/agile/1.0/epic/{epicIdOrKey}/issue
-func (b *EpicsService) ListIssues(ctx context.Context, idOrKey string, opts *IssuesOptions) ([]*Issue, *Response, error) {
+func (e *EpicsService) ListIssues(ctx context.Context, idOrKey string, opts *IssuesOptions) ([]*Issue, *Response, error) {
 
 	q := QueryParameters(opts)
 
-	req, err := b.client.NewRequest("GET", fmt.Sprintf("epic/%s/issue%s", idOrKey, q), nil)
+	req, err := e.client.NewRequest("GET", fmt.Sprintf("epic/%s/issue%s", idOrKey, q), nil)
 	if err != nil {
 		return nil, nil, err
 	}
 
 	var wrap = &IssueWrap{}
-	resp, err := b.client.Do(ctx, req, wrap)
+	resp, err := e.client.Do(ctx, req, wrap)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -99,14 +99,14 @@ func (b *EpicsService) ListIssues(ctx context.Context, idOrKey string, opts *Iss
 // in the request JSON will not be updated. Valid values for color are color_1 to color_9.
 //
 // POST /rest/agile/1.0/epic/{epicIdOrKey}
-func (b *EpicsService) PartiallyUpdate(ctx context.Context, idOrKey string, epic *Epic) (*Epic, *Response, error) {
-	req, err := b.client.NewRequest("POST", fmt.Sprintf("epic/%s", idOrKey), epic)
+func (e *EpicsService) PartiallyUpdate(ctx context.Context, idOrKey string, epic *Epic) (*Epic, *Response, error) {
+	req, err := e.client.NewRequest("POST", fmt.Sprintf("epic/%s", idOrKey), epic)
 	if err != nil {
 		return nil, nil, err
 	}
 
 	var updatedEpic = &Epic{}
-	resp, err := b.client.Do(ctx, req, updatedEpic)
+	resp, err := e.client.Do(ctx, req, updatedEpic)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -121,13 +121,13 @@ func (b *EpicsService) PartiallyUpdate(ctx context.Context, idOrKey string, epic
 // operation is 50.
 //
 // POST /rest/agile/1.0/epic/{epicIdOrKey}/issue
-func (b *EpicsService) MoveIssuesTo(ctx context.Context, idOrKey string, issueKeys *IssueKeys) (bool, *Response, error) {
-	req, err := b.client.NewRequest("POST", fmt.Sprintf("epic/%s/issue", idOrKey), issueKeys)
+func (e *EpicsService) MoveIssuesTo(ctx context.Context, idOrKey string, issueKeys *IssueKeys) (bool, *Response, error) {
+	req, err := e.client.NewRequest("POST", fmt.Sprintf("epic/%s/issue", idOrKey), issueKeys)
 	if err != nil {
 		return false, nil, err
 	}
 
-	resp, err := b.client.Do(ctx, req, nil)
+	resp, err := e.client.Do(ctx, req, nil)
 	if err != nil {
 		return false, resp, err
 	}
@@ -144,17 +144,17 @@ func (b *EpicsService) MoveIssuesTo(ctx context.Context, idOrKey string, issueKe
 // like sprint, closedSprints, flagged, and epic. By default, the returned issues are ordered by rank.
 //
 // GET /rest/agile/1.0/epic/none/issue
-func (b *EpicsService) ListIssuesWithoutEpic(ctx context.Context, opts *IssuesOptions) ([]*Issue, *Response, error) {
+func (e *EpicsService) ListIssuesWithoutEpic(ctx context.Context, opts *IssuesOptions) ([]*Issue, *Response, error) {
 
 	q := QueryParameters(opts)
 
-	req, err := b.client.NewRequest("GET", "epic/none/issue"+q, nil)
+	req, err := e.client.NewRequest("GET", "epic/none/issue"+q, nil)
 	if err != nil {
 		return nil, nil, err
 	}
 
 	var wrap = &IssueWrap{}
-	resp, err := b.client.Do(ctx, req, wrap)
+	resp, err := e.client.Do(ctx, req, wrap)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -171,22 +171,22 @@ func (b *EpicsService) ListIssuesWithoutEpic(ctx context.Context, opts *IssuesOp
 // operation is 50.
 //
 // POST /rest/agile/1.0/epic/none/issue
-func (b *EpicsService) RemoveIssuesFrom(ctx context.Context, issueKeys *IssueKeys) (bool, *Response, error) {
-	return b.MoveIssuesTo(ctx, "none", issueKeys)
+func (e *EpicsService) RemoveIssuesFrom(ctx context.Context, issueKeys *IssueKeys) (bool, *Response, error) {
+	return e.MoveIssuesTo(ctx, "none", issueKeys)
 }
 
 // Rank moves (ranks) an epic before or after a given epic.
 // If rankCustomFieldId is not defined, the default rank field will be used.
 //
 // PUT /rest/agile/1.0/epic/{epicIdOrKey}/rank
-func (b *EpicsService) Rank(ctx context.Context, idOrKey string, rank *EpicRank) (bool, *Response, error) {
+func (e *EpicsService) Rank(ctx context.Context, idOrKey string, rank *EpicRank) (bool, *Response, error) {
 
-	req, err := b.client.NewRequest("PUT", fmt.Sprintf("epic/%s/rank", idOrKey), rank)
+	req, err := e.client.NewRequest("PUT", fmt.Sprintf("epic/%s/rank", idOrKey), rank)
 	if err != nil {
 		return false, nil, err
 	}
 
-	resp, err := b.client.Do(ctx, req, nil)
+	resp, err := e.client.Do(ctx, req, nil)
 	if err != nil {
 		return false, resp, err
 	}
