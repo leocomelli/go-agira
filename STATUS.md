@@ -1,6 +1,6 @@
 # Status
 
-[JIRA Agile Server REST API reference v7.3.1](https://docs.atlassian.com/jira-software/REST/7.3.1/#agile/1.0/board-getAllBoards)
+[JIRA Agile Server REST API reference v7.3.1](https://docs.atlassian.com/jira-software/REST/7.3.1/)
 
 ## Backlog
 * [x] Move issues to backlog `POST /rest/agile/1.0/backlog/issue`
