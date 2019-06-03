@@ -35,7 +35,7 @@
 * [x] Partially update epic `POST /rest/agile/1.0/epic/{epicIdOrKey}`
 * [x] Get issues for epic `GET /rest/agile/1.0/epic/{epicIdOrKey}/issue`
 * [x] Move issues to epic `POST /rest/agile/1.0/epic/{epicIdOrKey}/issue`
-* [ ] Rank epics `PUT /rest/agile/1.0/epic/{epicIdOrKey}/rank`
+* [x] Rank epics `PUT /rest/agile/1.0/epic/{epicIdOrKey}/rank`
 * [x] Get issues without epic `GET /rest/agile/1.0/epic/none/issue`
 * [x] Remove issues from epic `POST /rest/agile/1.0/epic/none/issue`
 

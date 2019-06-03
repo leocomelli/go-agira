@@ -50,6 +50,7 @@ func main() {
 		partiallyUpdate(client)
 		moveIssuesTo(client)
 		removeIssuesFrom(client)
+		rank(client)
 	}
 }
 
@@ -134,4 +135,19 @@ func listIssuesWithoutEpic(client *jira.Client) {
 		fmt.Printf("\tid: %s, key: %s, reporter: %s, status: %s\n",
 			i.ID, i.Key, i.Fields.Reporter.DisplayName, i.Fields.Status.Name)
 	}
+}
+
+func rank(client *jira.Client) {
+	fmt.Println("RANK...")
+
+	rank := &jira.EpicRank{
+		RankBefore: "MCP-14",
+	}
+
+	ok, _, err := client.Epics.Rank(context.Background(), "MCP-592", rank)
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	fmt.Printf("\t%v\n", ok)
 }

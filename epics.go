@@ -30,6 +30,13 @@ type Epic struct {
 	Color    map[string]string `json:"color,omitempty"`
 }
 
+// EpicRank contains the fields for ranking epics
+type EpicRank struct {
+	RankAfter         string `json:"rankAfterEpic,omitempty"`
+	RankBefore        string `json:"rankBeforeEpic,omitempty"`
+	RankCustomFieldID string `json:"rankCustomFieldId,omitempty"`
+}
+
 // EpicsOptions contains all options to list all epics from the board
 type EpicsOptions struct {
 	//The starting index of the returned epics. Base index: 0. See the 'Pagination' section at the top of this page for more details.
@@ -166,4 +173,27 @@ func (b *EpicsService) ListIssuesWithoutEpic(ctx context.Context, opts *IssuesOp
 // POST /rest/agile/1.0/epic/none/issue
 func (b *EpicsService) RemoveIssuesFrom(ctx context.Context, issueKeys *IssueKeys) (bool, *Response, error) {
 	return b.MoveIssuesTo(ctx, "none", issueKeys)
+}
+
+// Rank moves (ranks) an epic before or after a given epic.
+// If rankCustomFieldId is not defined, the default rank field will be used.
+//
+// PUT /rest/agile/1.0/epic/{epicIdOrKey}/rank
+func (b *EpicsService) Rank(ctx context.Context, idOrKey string, rank *EpicRank) (bool, *Response, error) {
+
+	req, err := b.client.NewRequest("PUT", fmt.Sprintf("epic/%s/rank", idOrKey), rank)
+	if err != nil {
+		return false, nil, err
+	}
+
+	resp, err := b.client.Do(ctx, req, nil)
+	if err != nil {
+		return false, resp, err
+	}
+
+	if resp.StatusCode == http.StatusNoContent {
+		return true, resp, nil
+	}
+
+	return false, resp, nil
 }

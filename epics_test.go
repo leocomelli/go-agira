@@ -127,3 +127,21 @@ func TestEpicsServiceListIssuesWithoutEpic(t *testing.T) {
 	assert.Nil(t, err)
 	assert.Len(t, backlog, 1)
 }
+
+func TestEpicsServiceRank(t *testing.T) {
+	client, mux, _, teardown := setup()
+	defer teardown()
+
+	mux.HandleFunc("/epic/1/rank", func(w http.ResponseWriter, r *http.Request) {
+		assert.Equal(t, "PUT", r.Method)
+		w.WriteHeader(http.StatusNoContent)
+	})
+
+	rank := &EpicRank{
+		RankBefore: "9",
+	}
+
+	ok, _, err := client.Epics.Rank(context.Background(), "1", rank)
+	assert.Nil(t, err)
+	assert.True(t, ok)
+}
