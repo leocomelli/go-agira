@@ -10,6 +10,7 @@ import (
 	"net/url"
 	"os"
 	"reflect"
+	"strings"
 	"testing"
 
 	"github.com/stretchr/testify/assert"
@@ -199,9 +200,10 @@ func TestQueryParameters(t *testing.T) {
 	}
 
 	tests := []struct {
-		Name    string
-		Options *MyOptions
-		Query   string
+		Name      string
+		Options   *MyOptions
+		Query     string
+		Assetions int
 	}{
 		{
 			Name: "all options",
@@ -210,31 +212,44 @@ func TestQueryParameters(t *testing.T) {
 				Name:       "foo",
 				IsLast:     true,
 			},
-			Query: "?maxResults=50&name=foo&isLast=true",
+			Query:     "?maxResults=50&name=foo&isLast=true",
+			Assetions: 3,
 		},
 		{
 			Name: "one options",
 			Options: &MyOptions{
 				Name: "foo",
 			},
-			Query: "?name=foo",
+			Query:     "?name=foo",
+			Assetions: 1,
 		},
 		{
-			Name:    "empty options",
-			Options: &MyOptions{},
-			Query:   "",
+			Name:      "empty options",
+			Options:   &MyOptions{},
+			Query:     "",
+			Assetions: 0,
 		},
 		{
-			Name:    "nil options",
-			Options: nil,
-			Query:   "",
+			Name:      "nil options",
+			Options:   nil,
+			Query:     "",
+			Assetions: 0,
 		},
 	}
 
 	for _, tt := range tests {
 		t.Run(tt.Name, func(t *testing.T) {
 			s := QueryParameters(tt.Options)
-			assert.Equal(t, tt.Query, s)
+
+			vars := strings.Split(tt.Query, "&")
+			assertions := 0
+			for _, v := range vars {
+				if tt.Query != "" && strings.Contains(s, strings.TrimPrefix(v, "?")) {
+					assertions++
+				}
+			}
+
+			assert.Equal(t, tt.Assetions, assertions)
 		})
 	}
 }
