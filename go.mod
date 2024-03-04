@@ -4,5 +4,5 @@ go 1.12
 
 require (
 	github.com/fatih/structs v1.1.0
-	github.com/stretchr/testify v1.8.4
+	github.com/stretchr/testify v1.9.0
 )
